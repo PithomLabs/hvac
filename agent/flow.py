@@ -1,7 +1,8 @@
 import sys
 import os
 
-# Add PocketFlow to path
+# Add project root and PocketFlow to path
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "PocketFlow-main"))
 
 from pocketflow import Flow

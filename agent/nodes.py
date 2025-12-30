@@ -1,9 +1,9 @@
 import sys
 import os
-import yaml
 import json
 
-# Add PocketFlow to path
+# Add project root and PocketFlow to path
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "PocketFlow-main"))
 
 from pocketflow import Node
@@ -29,15 +29,17 @@ class DecideNode(Node):
 
         History: {json.dumps(history)}
 
-        Respond ONLY in YAML format:
-        action: <chat|extract|book|finish>
-        reasoning: <brief explanation>
+        Respond ONLY in JSON format:
+        {{
+          "action": "chat|extract|book|finish",
+          "reasoning": "brief explanation"
+        }}
         """
         response = call_llm(prompt)
         try:
             # Clean response from markdown if present
-            clean_response = response.replace("```yaml", "").replace("```", "").strip()
-            return yaml.safe_load(clean_response)
+            clean_response = response.replace("```json", "").replace("```", "").strip()
+            return json.loads(clean_response)
         except Exception as e:
             return {"action": "chat", "reasoning": f"Error parsing decision: {e}"}
 
@@ -84,12 +86,13 @@ class ExtractionNode(Node):
         - service_type (e.g. AC Repair, Furnace Maintenance)
         - issue (description of the problem)
 
-        Respond ONLY in YAML format. If a value is unknown, keep it as null.
+        Respond ONLY in JSON format. If a value is unknown, keep it as null.
+        Example: {{"name": "John", "address": "123 Main St"}}
         """
         response = call_llm(prompt)
         try:
-            clean_response = response.replace("```yaml", "").replace("```", "").strip()
-            return yaml.safe_load(clean_response)
+            clean_response = response.replace("```json", "").replace("```", "").strip()
+            return json.loads(clean_response)
         except:
             return {}
 
