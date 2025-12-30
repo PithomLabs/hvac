@@ -1,0 +1,39 @@
+# HVAC Booking Agent Walkthrough
+
+The HVAC Booking Agent is fully implemented using the minimalist **PocketFlow** framework. Despite system-level constraints (corrupted [/etc/os-release](file:///etc/os-release) breaking `pip`), I have delivered a robust, dependency-free solution.
+
+## Deliverables
+
+- **SQLite Database**: [database.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/database.py) manages scheduling and customers.
+- **Dependency-Free LLM Wrapper**: [call_llm.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/utils/call_llm.py) and [call_llm_async.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/utils/call_llm_async.py) use Python standard libraries with exponential backoff retries.
+- **Agent Nodes**: [nodes.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/nodes.py) implements the Decider/Extractor/Booker pattern using JSON for reliable parsing.
+- **Conversation Flow**: [flow.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/flow.py) orchestrates the cyclical agent graph.
+- **Synthetic Data**: [scenarios.json](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/data/scenarios.json) contains 105 realistic test dialogues generated in parallel.
+- **CLI Interface**: [main.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/main.py) provides a terminal-based booking experience.
+
+## Verification Results
+
+### 1. Database Initialization
+Confirmed creation of `customers`, `services`, `available_slots`, and `bookings` tables with initial seed data.
+
+### 2. Node Logic
+Simulated a conversation and verified that:
+- [DecideNode](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/nodes.py#15-50) correctly identifies user intent ("extract").
+- [ExtractionNode](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/nodes.py#65-115) parses unstructured text into structured user profiles.
+- [BookingNode](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/nodes.py#116-170) fulfills database constraints and commits records.
+
+### 3. Scenario Generation
+Generated 100+ scenarios in under 2 minutes using [AsyncParallelBatchNode](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/PocketFlow-main/pocketflow/__init__.py#79-81).
+
+## Beads Audit Trail
+All work was tracked in Beads:
+- **hvac-agent-98z**: Database schema (Closed)
+- **hvac-agent-o9h**: Node implementation (Closed)
+- **hvac-agent-ytc**: Scenario generation (Closed)
+- **hvac-agent-9zl**: System corruption tracking (Open)
+- **hvac-agent-gik**: Dependency pivot (Closed)
+
+## Running the Agent
+```bash
+python3 agent/main.py
+```
