@@ -1,0 +1,83 @@
+# Implementation Plan: HVAC Booking Agent with PocketFlow
+
+This plan outlines the design and implementation of an AI-powered HVAC service booking agent using the minimalist **PocketFlow** framework. It addresses inconsistencies found in the provided context and establishes a robust architecture for a conversational agent.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Framework Choice**: While `CHALLENGE.MD` mentions `openai-agents-python`, this plan strictly adheres to the **PocketFlow** framework as per the user's primary objective and the detailed guidance in `GEMINI.md` and `CONTEXT_ENGINEERING.txt`.
+
+> [!NOTE]
+> **Issue Tracking**: Following `AGENTS.MD`, all discrete units of work will be tracked using the **Beads (`bd`)** CLI. This implementation plan will be the basis for creating these issues.
+
+## Proposed Inconsistency Resolutions
+
+| Inconsistency | Source A (`CHALLENGE.MD`) | Source B (`CONTEXT_ENGINEERING..txt`) | Resolution |
+| :--- | :--- | :--- | :--- |
+| **Framework** | `openai-agents-python` | `PocketFlow` | **PocketFlow** (Minimalist, 100-line core) |
+| **Scenarios** | At least 10 | At least 100 | **100+ scenarios** generated via Batch Processing |
+| **Flow Design** | Linear Booking Process | Agent (Router/Decider) Pattern | **Agent Pattern** (Decide -> Tool/Chat -> Decide) |
+| **Data Format** | Unspecified | Structured YAML | **YAML** for all LLM-to-Machine communication |
+
+## Proposed Changes
+
+### [Component] HVAC Booking Agent (Project Root & `agent/` subfolder)
+
+#### [NEW] [design.md](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/docs/design.md)
+Detailed design document for the HVAC Agent flow, nodes, and shared store.
+
+#### [NEW] [utils/call_llm.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/utils/call_llm.py)
+Minimalist wrapper for the LLM API (OpenAI/Gemini).
+
+#### [NEW] [nodes.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/nodes.py)
+Implementation of PocketFlow nodes:
+- `DecideNode`: The router that determines the next step.
+- `ChatNode`: Handles general customer inquiries.
+- `ExtractionNode`: Parses unstructured text into YAML-formatted booking details.
+- `BookingNode`: Simulates/Executes the final booking action.
+- `ScenarioGeneratorNode` (Batch): For synthetic data generation.
+
+#### [NEW] [flow.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/flow.py)
+Orchestrates the nodes into a conversational loop and a batch generation flow.
+
+#### [NEW] [main.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/main.py)
+CLI entry point for the HVAC agent and the scenario generator.
+
+---
+
+## Technical Details
+
+### Shared Store Structure
+```python
+shared = {
+    "history": [],             # List of {"role": "...", "content": "..."}
+    "booking_details": {},     # Extracted YAML data (name, issue, location, etc.)
+    "available_slots": [],     # Populated by BookingNode if needed
+    "is_confirmed": False      # Status flag
+}
+```
+
+### Flow Diagram
+```mermaid
+flowchart TD
+    Start --> Decide[Decide Node]
+    Decide -->|chat| Chat[Chat Node]
+    Decide -->|extract| Extract[Extraction Node]
+    Decide -->|book| Book[Booking Node]
+    Decide -->|finish| End
+    
+    Chat --> Decide
+    Extract --> Decide
+    Book --> Decide
+```
+
+## Verification Plan
+
+### Automated Tests
+1. **Scenario Generation**: Run the `ScenarioGeneratorNode` to ensure it produces 100+ valid YAML dialogues.
+2. **Unit Tests**: Test the `ExtractionNode` with complex messy inputs to verify YAML parsing and data accuracy.
+3. **Flow Execution**: Run the "User Simulator" flow against the "HVAC Agent" flow for at least 10 turns to verify loop integrity.
+
+### Manual Verification
+1. **CLI Interaction**: Manually test common scenarios (AC repair request, pricing haggle, rescheduling) via the agent CLI.
+2. **Beads Audit**: Ensure all tasks are correctly transition through `bd update` and `bd close`.
