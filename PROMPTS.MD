@@ -34,3 +34,15 @@ READ GEMINI.MD for PocketFlow guidance
 From all of that context, analyze the inconsistencies in CONTEXT_ENGINEERING.txt and write your detailed comprehensive plan as IMPLEMENTATION_PLAN.MD. Code will be written under agent subfolder later
 
 Ask if you need clarifications, I will say next when to proceed with the actual coding implementation
+
+10. Do you have any questions to clarify? I will say next when to proceed with the implementation
+
+I have a few specific questions to ensure the implementation aligns perfectly with your expectations before we start coding:
+
+LLM Choice: I see GEMINI_API_KEY and OPENROUTER_API_KEY in your environment. Would you prefer me to use Gemini (e.g., gemini-2.0-flash) or a specific model via OpenRouter for the agent's "brain"?
+Mocking vs. Realism: For the BookingNode, should I create a simple mock database or CSV to simulate appointment availability, or is a simple terminal print-out of the "success" state sufficient for this initial version?
+Git Initialization: The bd sync command requires a Git repository. Since the current directory isn't initialized yet, would you like me to run git init and create an initial commit to enable the full Beads workflow?
+Scenario Storage: When generating the 100+ scenarios, would you like them stored as a single YAML file (e.g., data/scenarios.yaml) for reference, or should they be integrated directly into the testing suite?
+Agent Persona: Beyond the HVAC expertise, should the agent have a specific "mood" or brand voice (e.g., "Always empathetic", "Quick and professional", "Highly detailed")?
+I'm ready to proceed once these are addressed. Just say "next" when you want me to start the implementation!
+
