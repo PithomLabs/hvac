@@ -1,0 +1,842 @@
+[
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Normal",
+      "location": "Small Office"
+    },
+    "user_message": "Hi there, I need to schedule a service for our small office because the AC is blowing warm air. Can you help me arrange an appointment?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Normal",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I need to schedule a repair for the AC at my rental property. It's been blowing warm air, and I\u2019m concerned it might need urgent attention. Can you help me set up a time for a technician to come out? Thanks!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Normal",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I need to schedule a service appointment for my home\u2019s air conditioning system. It's been blowing warm air instead of cooling down the house. Could you help me with that?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Frustrated",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I really need help with my AC as it\u2019s just blowing warm air instead of cooling. I\u2019m so frustrated because it\u2019s a rental property and it\u2019s getting uncomfortable in here. Can you send someone out to take a look as soon as possible?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Frustrated",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I've been dealing with my AC blowing warm air in my apartment, and it's really frustrating. Can I schedule a technician to come out and fix it as soon as possible? Thanks!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Frustrated",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi there, I'm really frustrated because my AC is blowing warm air instead of cooling the house. Can I get someone to come out to fix this in my home?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Urgent",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I really need help with my AC \u2014 it\u2019s blowing warm air, and it\u2019s starting to get uncomfortable in my home. Can you send someone out to check it as soon as possible? Thanks!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Urgent",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I need urgent help with my office AC; it\u2019s blowing warm air and it's getting uncomfortable in here. Can you send someone out to take a look as soon as possible?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Urgent",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I\u2019m in a bit of a crisis here\u2014my AC is blowing warm air and it\u2019s getting really uncomfortable in my rental property. Can you help me schedule an urgent appointment to get this fixed? Thanks!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Polite",
+      "location": "Rental Property"
+    },
+    "user_message": "Hello, I hope you\u2019re doing well. I\u2019m reaching out because the air conditioner in my rental property seems to be blowing warm air, and it\u2019s quite uncomfortable. Could you please help me schedule a service visit at your earliest convenience? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Polite",
+      "location": "Apartment"
+    },
+    "user_message": "Hello! I hope you\u2019re having a great day. I\u2019m reaching out because my apartment\u2019s AC is blowing warm air, and I would really appreciate it if I could schedule a service appointment at your earliest convenience. Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Polite",
+      "location": "Small Office"
+    },
+    "user_message": "Hello, I hope you\u2019re having a great day! I\u2019m reaching out because our AC unit is currently blowing warm air, and we need it checked as soon as possible. It\u2019s a small office, and we\u2019d really appreciate your help in scheduling an appointment. Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Skeptical",
+      "location": "Residential Home"
+    },
+    "user_message": "Hey, I'm having a problem with my AC; it's just blowing warm air. I\u2019m not sure if it\u2019s worth fixing or if I should just get a new unit. Can you send someone to take a look? I\u2019d like to know what I\u2019m dealing with before making any decisions."
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Skeptical",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I need to schedule a service for my apartment\u2019s AC. It\u2019s been blowing warm air lately, and I\u2019m not sure what's going on. I\u2019ve had issues in the past with repairs not fixing the problem, so I\u2019m a bit skeptical about this. Can someone come take a look? Thanks."
+  },
+  {
+    "prompt_vars": {
+      "problem": "AC blowing warm air",
+      "mood": "Skeptical",
+      "location": "Small Office"
+    },
+    "user_message": "Hi there, I've noticed that my AC unit is blowing warm air instead of cooling down my small office. I\u2019m a bit skeptical about whether it\u2019s a simple fix or something more serious, but I\u2019d like to schedule an appointment to get it checked out. Can you let me know when someone might be available?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Normal",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I need to schedule a service for my furnace. It's been making a loud banging noise recently, and I'm worried it might be a bigger issue. Can you help me arrange an appointment? Thanks!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Normal",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I need to schedule a service appointment for my furnace; it\u2019s been making a banging noise lately. I live in an apartment, so could you please let me know your availability? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Normal",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I'm reaching out because the furnace in my rental property has been making a loud banging noise lately. Could you help me schedule someone to come take a look at it? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Frustrated",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I need to schedule a service for my apartment's furnace. It's been making this really loud banging noise, and it's getting worse. I'm quite frustrated, so I hope you can fit me in as soon as possible. Thanks!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Frustrated",
+      "location": "Small Office"
+    },
+    "user_message": "I'm really frustrated because our furnace in the small office has been making a loud banging noise, and it\u2019s getting worse. Can we schedule someone to come out and take a look as soon as possible?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Frustrated",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I'm really frustrated because my furnace has been making this loud banging noise every time it starts up. I need someone to come take a look at it as soon as possible. It's a residential home, and I'd appreciate your help in getting this sorted out quickly. Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Urgent",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I need to schedule an urgent appointment to have my furnace checked out\u2014it's making a banging noise and I'm really concerned it might be a serious issue. I live in an apartment and would appreciate the earliest possible time for a technician to come by. Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Urgent",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I need to schedule an urgent service for my rental property. The furnace is making a loud banging noise, and it\u2019s really concerning. Can you send someone out to take a look as soon as possible? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Urgent",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I need to schedule an urgent appointment for my small office. The furnace has started making a loud banging noise, and it\u2019s concerning. Can you help me get someone out here as soon as possible? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Polite",
+      "location": "Apartment"
+    },
+    "user_message": "Hi there! I hope you're doing well. I\u2019m reaching out because my furnace has been making a loud banging noise lately, and I\u2019d really appreciate your help in scheduling a technician to take a look at it. I live in an apartment, so if you could let me know the earliest availability, that would be great. Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Polite",
+      "location": "Residential Home"
+    },
+    "user_message": "Hello, I hope you're doing well. I'm having an issue with my furnace \u2014 it's been making a loud banging noise, and I'm a bit concerned. Could we schedule a technician to come out and take a look at it? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Polite",
+      "location": "Small Office"
+    },
+    "user_message": "Hello, I hope you\u2019re doing well. I\u2019m reaching out because our furnace at the small office is making a loud banging noise, and I\u2019d like to schedule a technician to take a look at it. Could you please help me with that? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Skeptical",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I\u2019m wondering if you could help me with an issue I\u2019m having. My furnace has been making this loud banging noise, and I\u2019m a bit skeptical about whether it\u2019s a serious problem or not. Can I schedule someone to take a look at it? I live in a residential home. Thank you."
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Skeptical",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I\u2019m reaching out because the furnace in my rental property has been making a really loud banging noise lately. I\u2019m a bit skeptical about how serious this issue might be, but I\u2019d like to get someone to take a look at it. Can you schedule an appointment for me?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Furnace making banging noise",
+      "mood": "Skeptical",
+      "location": "Small Office"
+    },
+    "user_message": "Hi there, I've got a small office furnace that's been making a pretty weird banging noise lately. I'm a bit skeptical about whether it really needs servicing, but I guess it could be worth checking out. Can you send someone to take a look?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Normal",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I'm having an issue with the thermostat in our small office\u2014it has a blank screen and isn't responding. Could you help me schedule a technician to take a look at it? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Normal",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I need to schedule a service for my rental property. The thermostat screen is completely blank, and I\u2019m not sure what to do. Could you help me set up an appointment?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Normal",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I need to book a technician to take a look at my thermostat. The screen is completely blank, and I can't adjust the temperature in my apartment. Can you help me with that?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Frustrated",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I really need help\u2014my thermostat screen is completely blank and I can't seem to get the heating to work in my apartment. I've tried resetting it, but nothing's happening. Can you come out and take a look as soon as possible? I'm getting really frustrated!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Frustrated",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I need help with my rental property's thermostat\u2014its screen is completely blank and I'm getting really frustrated trying to figure it out. Can you please send someone to take a look at it?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Frustrated",
+      "location": "Small Office"
+    },
+    "user_message": "Hi there, I'm really frustrated because the thermostat screen in my small office has gone completely blank and I'm not sure how to get it working again. Can you help me book a technician to come and take a look at it?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Urgent",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I need help right away\u2014my thermostat screen is completely blank, and I\u2019m really worried because it's getting too hot in my apartment. Can you send someone over as soon as possible?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Urgent",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi there, I\u2019m having an urgent issue with the thermostat at my rental property; the screen is completely blank and I\u2019m worried about the temperature. Can we schedule someone to come out and take a look as soon as possible? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Urgent",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I need immediate assistance with my office thermostat\u2014the screen is completely blank and it\u2019s getting uncomfortably warm. Can we schedule someone to take a look at it as soon as possible?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Polite",
+      "location": "Residential Home"
+    },
+    "user_message": "Hello, I hope you\u2019re doing well. I\u2019m having an issue with the thermostat in my home; the screen is completely blank and I can\u2019t seem to adjust the temperature. Could I schedule a service appointment to have this looked at? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Polite",
+      "location": "Apartment"
+    },
+    "user_message": "Hello! I hope you're doing well. I'm having an issue with my apartment's thermostat, as the screen is completely blank and I'm not sure how to fix it. Could you please help me schedule a service appointment to get this resolved? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Polite",
+      "location": "Small Office"
+    },
+    "user_message": "Hello, I hope you're doing well. I'm reaching out because the thermostat in our small office has gone blank, and we're unable to adjust the temperature. Could you please assist us in scheduling a technician to take a look at it? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Skeptical",
+      "location": "Apartment"
+    },
+    "user_message": "Hi there, I'm having an issue with my thermostat since the screen is completely blank. I live in an apartment, and I'm a bit skeptical about whether this is something that can be easily fixed or if I should just replace it. Can you help me figure out what to do next?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Skeptical",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi there, I\u2019ve noticed that the thermostat screen in my rental property is completely blank, and I\u2019m starting to worry it might be a bigger issue. Can you help me schedule a technician to come take a look? I'm a bit skeptical about whether it can be fixed easily or if it will turn into a costly repair."
+  },
+  {
+    "prompt_vars": {
+      "problem": "Thermostat screen is blank",
+      "mood": "Skeptical",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I\u2019m having an issue with the thermostat in my small office\u2014the screen is completely blank and I\u2019m not sure if it\u2019s a simple fix or something more serious. Can you send someone to take a look? I'm a bit skeptical about how quickly this can be resolved, though."
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Normal",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi there, I need to schedule a repair for my HVAC system. I\u2019ve noticed water leaking from the indoor unit in my home, and I\u2019d like to get it fixed as soon as possible. Could you help me with that?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Normal",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I need to schedule a service appointment for our small office. We have a water leak coming from the indoor HVAC unit, and I\u2019d like to get it fixed as soon as possible. Could you help me with that?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Normal",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I need to schedule a service appointment as I have water leaking from my indoor HVAC unit in my apartment. Can you help me with that?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Frustrated",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I'm really frustrated because there's water leaking from the indoor unit of my HVAC system in my home. I need someone to come out and take a look as soon as possible. Can you help me schedule an appointment?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Frustrated",
+      "location": "Small Office"
+    },
+    "user_message": "I'm really frustrated because there's water leaking from the indoor unit of our small office, and it's causing quite a mess. Can someone come out to fix it as soon as possible?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Frustrated",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I'm really frustrated because I have water leaking from my indoor HVAC unit in my apartment. Can someone come out to take a look at this as soon as possible? It's becoming a real issue. Thank you."
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Urgent",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I need urgent help with our HVAC system at our small office. There's water leaking from the indoor unit, and it needs to be fixed ASAP. Can you send someone out today?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Urgent",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I need urgent help with my HVAC system at home. There's water leaking from the indoor unit, and it's starting to cause some damage. Can we schedule someone to come out and take a look as soon as possible? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Urgent",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I'm calling because there's a water leak coming from the indoor unit of my rental property, and it's becoming urgent. Could you send someone out to take a look as soon as possible?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Polite",
+      "location": "Small Office"
+    },
+    "user_message": "Hello, I hope you're doing well. I've noticed that there's water leaking from the indoor unit in our small office, and I would appreciate it if you could help schedule a service appointment at your earliest convenience. Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Polite",
+      "location": "Apartment"
+    },
+    "user_message": "Hello, I hope you\u2019re doing well. I\u2019m reaching out because I\u2019ve noticed some water leaking from the indoor unit of my apartment. Could you please help me schedule a time for someone to come and take a look? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Polite",
+      "location": "Residential Home"
+    },
+    "user_message": "Hello, I hope you\u2019re doing well. I\u2019m reaching out because I have a water leak coming from my indoor HVAC unit in my home, and I would appreciate it if I could schedule an appointment for someone to come and take a look at it. Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Skeptical",
+      "location": "Residential Home"
+    },
+    "user_message": "I think I might need someone to take a look at my HVAC system because there's water leaking from the indoor unit. I\u2019m a bit skeptical since I've had issues before and I'm not sure it\u2019s worth calling for a service. Can you tell me what the process is and if it might be something serious?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Skeptical",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I need to book someone to take a look at my HVAC system. I've noticed water leaking from the indoor unit in my apartment, and I'm not sure if it's a serious issue or just a minor repair. Can you send someone over, and how do I know this won't just be another costly fix?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Water leaking from indoor unit",
+      "mood": "Skeptical",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi there, I\u2019m contacting you about my rental property where I\u2019ve noticed water leaking from the indoor HVAC unit. I\u2019m a bit skeptical about the urgency of this\u2014I've had other issues in the past that turned out to be minor. Could you send someone to take a look and assess whether it\u2019s a serious problem or just a small fix?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Normal",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I've been noticing a strange burning smell coming from my heater every time I turn it on. I live in an apartment and would like to schedule someone to take a look at it. Can you help me with that?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Normal",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I hope you can help me. I've been noticing a strange burning smell every time I turn on my heater, and it's starting to worry me. Can I schedule an inspection for my residential home?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Normal",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I need to schedule a technician to check our heater. There's a strange burning smell when it turns on, and it's really concerning. We operate in a small office, so I\u2019d appreciate it if you could send someone out as soon as possible. Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Frustrated",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I need to schedule an urgent appointment for my rental property. When I turn on the heater, there's a strange burning smell coming from it, and I'm really worried. Can you send someone out as soon as possible? Thank you."
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Frustrated",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I'm really frustrated because my heater is giving off a strange burning smell every time I turn it on. I need to get this checked out as soon as possible. Can you help me schedule an appointment for a technician to come to my home?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Frustrated",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I need to schedule an urgent appointment for my small office HVAC system. There's a strange burning smell whenever the heater kicks on, and it's really concerning. Can you please send someone out as soon as possible? Thanks!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Urgent",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I need urgent help! My heater is emitting a strange burning smell every time it turns on in my small office, and I'm really worried about it. Can you schedule a technician to come out as soon as possible?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Urgent",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I really need help\u2014there's a strange burning smell coming from my heater when it kicks on. This is a residential home, and I'm worried something might be seriously wrong. Can we schedule a technician to come out as soon as possible?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Urgent",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I'm in urgent need of help. My heater just turned on and now there's a strange burning smell coming from it. I live in an apartment, and I'm really concerned about this. Could you please arrange for a technician to come and check it out as soon as possible? Thanks!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Polite",
+      "location": "Apartment"
+    },
+    "user_message": "Hello, I hope you\u2019re doing well. I\u2019m reaching out because I\u2019ve noticed a strange burning smell coming from my heater when it turns on in my apartment. Could you please help me schedule a service appointment to have this checked out? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Polite",
+      "location": "Small Office"
+    },
+    "user_message": "Hello, I hope you're doing well. I'm experiencing a strange burning smell whenever the heater turns on in my small office, and I'm concerned it might be a sign of an issue. Could you please help me schedule a service appointment to have this checked out? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Polite",
+      "location": "Residential Home"
+    },
+    "user_message": "Hello, I hope you're doing well. I've noticed a strange burning smell coming from my heater when it turns on, and I'm a bit concerned. Could you please help me schedule a time for a technician to come and take a look at it? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Skeptical",
+      "location": "Apartment"
+    },
+    "user_message": "I've noticed a strange burning smell every time I turn on the heater in my apartment, and I'm starting to get concerned. Can you help me figure out if I should book an appointment for this? I\u2019m a bit skeptical since it\u2019s an older unit, but I want to make sure everything is safe."
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Skeptical",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I'm calling because I've noticed a strange burning smell coming from the heater in my small office every time it turns on. I'm a bit skeptical about this\u2014I\u2019m not sure if it\u2019s a serious issue or just something minor. Can someone come check it out?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Strange burning smell when heater turns on",
+      "mood": "Skeptical",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I'm having some issues with my rental property's heater. Every time it turns on, there's this strange burning smell, which makes me quite skeptical about using it. Can I get a technician to take a look at it?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Normal",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi, I\u2019d like to schedule the annual maintenance for my rental property. Could you let me know available dates and times? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Normal",
+      "location": "Small Office"
+    },
+    "user_message": "Hi there! I'd like to schedule the annual maintenance for the HVAC system in our small office. Could you let me know the available dates and times? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Normal",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I'd like to schedule my annual HVAC maintenance for my apartment. Can you let me know the available dates and times? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Frustrated",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I really need to schedule the annual maintenance for our small office HVAC system. I keep getting reminders, but I can\u2019t seem to get anyone on the phone. Can you help me set something up? It\u2019s getting frustrating!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Frustrated",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I'm really frustrated trying to get my annual HVAC maintenance scheduled for my apartment. Can you help me set that up ASAP?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Frustrated",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I need to book my annual HVAC maintenance, but I\u2019m feeling really frustrated trying to find a time that works. Can you help me get this scheduled for my home?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Urgent",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I need to schedule annual maintenance for my HVAC system as soon as possible. It\u2019s a residential property, and I\u2019m concerned about some unusual noises it\u2019s been making. Can we set up an appointment for this week?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Urgent",
+      "location": "Apartment"
+    },
+    "user_message": "Hi, I need to schedule my annual HVAC maintenance as soon as possible for my apartment. It's been acting up lately, and I want to make sure everything is running smoothly. Can you help me set up an appointment?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Urgent",
+      "location": "Small Office"
+    },
+    "user_message": "Hi, I need to schedule annual maintenance for the HVAC system in our small office as soon as possible. Can you help me book an appointment?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Polite",
+      "location": "Rental Property"
+    },
+    "user_message": "Hello, I hope you're doing well! I would like to schedule the annual maintenance for the HVAC system at my rental property. Could you please assist me with available dates and times? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Polite",
+      "location": "Residential Home"
+    },
+    "user_message": "Hello! I hope you're doing well. I would like to schedule my annual HVAC maintenance for my home at your earliest convenience. Please let me know what times are available. Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Polite",
+      "location": "Small Office"
+    },
+    "user_message": "Hello! I hope you're doing well. I'm looking to schedule the annual maintenance for the HVAC system in our small office. Could you please help me with available dates and times? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Skeptical",
+      "location": "Apartment"
+    },
+    "user_message": "Hi there, I'm considering scheduling the annual maintenance for my apartment's HVAC system, but I'm a bit skeptical about the necessity and cost. Can you explain what the maintenance includes and reassure me it's worth it?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Skeptical",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi, I'm thinking about scheduling annual maintenance for my HVAC system, but I\u2019m a bit skeptical about whether it\u2019s really necessary. Can you tell me what the process involves and how it benefits me?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Want to schedule annual maintenance",
+      "mood": "Skeptical",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi there, I need to schedule annual maintenance for my rental property\u2019s HVAC system, but I\u2019m a bit skeptical about the last service I received. Can you tell me why I should trust your team with this? Also, what does the maintenance include?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Normal",
+      "location": "Apartment"
+    },
+    "user_message": "Hi there! I\u2019m looking to get a new heat pump installed in my apartment and would like some information on the options available, as well as to schedule an appointment for a consultation. Thanks!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Normal",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi there, I'm looking to get a new heat pump installed in my residential home. Could you help me with the booking and provide some information on the options available? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Normal",
+      "location": "Small Office"
+    },
+    "user_message": "Hi there! I'm looking to install a new heat pump in my small office and would like to schedule a consultation. Could you let me know the available options and your availability for an appointment? Thanks!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Frustrated",
+      "location": "Small Office"
+    },
+    "user_message": "Hi there, I\u2019m really fed up with my current heating situation in my small office and need to install a new heat pump. Can you help me figure out the best options and schedule a time for installation? Thank you."
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Frustrated",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi there, I'm looking to get a heat pump installed in my rental property, but it feels like such a hassle to figure out appointments and costs. Can you help me get this sorted out as soon as possible? It\u2019s getting cold, and I really need to take care of this!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Frustrated",
+      "location": "Residential Home"
+    },
+    "user_message": "I'm really fed up with my old heating system; it\u2019s just not cutting it anymore. I\u2019m looking to install a new heat pump in my home, but I need someone who can help me figure out the best options and get it done quickly. Can you assist with that?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Urgent",
+      "location": "Rental Property"
+    },
+    "user_message": "Hi there, I need to schedule an installation for a new heat pump at my rental property as soon as possible. The current heating system isn't working properly, and it's getting really cold. Can we arrange a visit for this week?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Urgent",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi there, I urgently need to install a new heat pump in my home and would like to schedule an appointment as soon as possible. Can you help me with that?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Urgent",
+      "location": "Small Office"
+    },
+    "user_message": "Hi there, I'm looking to get a heat pump installed in our small office as soon as possible. The current system isn't cutting it, and we need something efficient for the upcoming season. Can you help me arrange an appointment for a consultation? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Polite",
+      "location": "Residential Home"
+    },
+    "user_message": "Hello, I hope you\u2019re doing well. I\u2019m considering the installation of a new heat pump for my residential home and would appreciate any information on your services, as well as a quote and possible scheduling options. Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Polite",
+      "location": "Rental Property"
+    },
+    "user_message": "Hello, I hope you're doing well. I'm interested in installing a new heat pump at my rental property and would like to schedule a consultation to discuss options and pricing. Could you please assist me with this? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Polite",
+      "location": "Apartment"
+    },
+    "user_message": "Hello, I hope you're doing well! I'm interested in discussing the installation of a new heat pump for my apartment. Could you please provide some information on available options and scheduling a consultation? Thank you!"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Skeptical",
+      "location": "Residential Home"
+    },
+    "user_message": "Hi there. I\u2019m considering a new heat pump installation for my home, but I\u2019m a bit skeptical about whether it\u2019s really worth it. Could you provide some information on the benefits and any potential drawbacks?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Skeptical",
+      "location": "Small Office"
+    },
+    "user_message": "I'm considering getting a heat pump installed in my small office, but I'm a bit skeptical about the investment. Can you explain the benefits and whether it would really be worth the cost for my space?"
+  },
+  {
+    "prompt_vars": {
+      "problem": "Interest in new heat pump installation",
+      "mood": "Skeptical",
+      "location": "Rental Property"
+    },
+    "user_message": "I'm considering installing a heat pump at my rental property, but I'm a bit skeptical about the costs and benefits. Can you provide some details on what to expect in terms of installation time, potential energy savings, and any maintenance requirements?"
+  }
+]
