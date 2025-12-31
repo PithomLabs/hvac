@@ -25,11 +25,11 @@ def create_hvac_agent_flow():
     decide - "chat" >> chat
     decide - "extract" >> extract
     decide - "book" >> book
+    decide - "update" >> book
     
-    # Loop back to decide
-    chat >> decide
+    # Loop back to decide for extraction (data processing)
+    # but STOP for chat and book (user interaction points)
     extract >> decide
-    book >> decide
 
     # Flow starts at decide
     return Flow(start=decide)

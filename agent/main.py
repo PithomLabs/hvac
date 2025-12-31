@@ -1,11 +1,34 @@
 import sys
 import os
+import time
 
-# Add root to path
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+# Add root to path so we can import from 'agent' and 'utils'
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agent.flow import create_hvac_agent_flow
 from agent.database import init_db
+
+# ANSI Escape Codes for "Premium" CLI look
+BLUE = "\033[94m"
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+RED = "\033[91m"
+BOLD = "\033[1m"
+RESET = "\033[0m"
+
+AGENT_DESCRIPTION = f"""
+{BOLD}{BLUE}--- HVAC Booking AI Assistant ---{RESET}
+Powered by {YELLOW}PocketFlow{RESET} and {YELLOW}OpenRouter{RESET}.
+
+I am an AI-powered HVAC service assistant designed to help you book repairs, maintenance, 
+and consultations with extreme professionalism and empathy. I can handle:
+- {GREEN}Emergency Repairs{RESET} (leaks, smells, extreme weather outages)
+- {GREEN}Maintenance Tune-ups{RESET}
+- {GREEN}New System Estimates{RESET}
+- {GREEN}Booking Modifications{RESET} (rescheduling, gate codes)
+
+{BOLD}Initial Prompt:{RESET} What is the issue you're facing, and how urgent is it?
+"""
 
 def main():
     # Ensure database is initialized
@@ -16,51 +39,51 @@ def main():
         "user_info": {},
         "booking_info": {},
         "current_action": None,
-        "last_response": ""
+        "last_response": "",
+        "extraction_attempts": 0
     }
 
     flow = create_hvac_agent_flow()
 
-    print("--- HVAC Booking Agent ---")
-    print("Welcome! How can I help you today?")
+    print(AGENT_DESCRIPTION)
     
     while True:
         try:
-            user_input = input("\nYou: ")
+            user_input = input(f"\n{BOLD}You:{RESET} ")
+            if not user_input.strip():
+                continue
+                
             if user_input.lower() in ["exit", "quit", "bye"]:
-                print("Agent: Goodbye! Have a great day.")
+                print(f"\n{BLUE}Agent:{RESET} It was a pleasure assisting you. Have a wonderful and comfortable day! Goodbye.")
                 break
             
             # Add user message to history
             shared["history"].append({"role": "user", "content": user_input})
+            shared["last_response"] = "" # Reset for this turn
             
-            # Run one iteration of the flow
-            # Note: The flow runs until it hits a node with no successor or an action with no transition.
-            # In our case, the nodes loop back to DecideNode. 
-            # We want the flow to run until it has produced a response to the user.
-            
-            # Since Decider routes to Chat/Extract/Book which all produce a response or loop,
-            # we need to be careful not to enter an infinite loop in a single .run() call if we don't handle termination.
-            
-            # Actually, standard PocketFlow Flow.run() will continue until it reaches a node without a valid successor for its action.
-            # Our nodes loop back. We might want to run the flow for a specific number of steps or until a 'response' is generated.
-            
-            # For a CLI, it's often better to run the flow until it reaches a 'wait for input' logic.
-            # In PocketFlow, we can run the flow and it will traverse nodes.
-            
-            # Let's adjust the nodes to return "finish" or something if they want to stop.
-            # For this simple CLI, we'll let the flow run one cycle.
-            
+            # Run the flow (it terminates when a user interaction node is reached)
             flow.run(shared)
             
+            response = shared.get("last_response")
+            if response:
+                print(f"\n{BLUE}Agent:{RESET} {response}")
+            else:
+                # Fallback if the flow ended without a response (should not happen with fixed graph)
+                print(f"\n{BLUE}Agent:{RESET} I'm processing your request. Could you please tell me more about the heating issue?")
+            
             if shared.get("current_action") == "finish":
-                print("\nAgent: It was a pleasure assisting you. Goodbye!")
+                print(f"\n{BOLD}(Closing session...){RESET}")
                 break
                 
         except KeyboardInterrupt:
+            print(f"\n\n{RED}Session interrupted.{RESET} Goodbye.")
             break
         except Exception as e:
-            print(f"Error: {e}")
+            import traceback
+            print(f"\n{RED}CRITICAL SYSTEM ERROR:{RESET}")
+            traceback.print_exc()
+            print(f"{RED}Error Details: {e}{RESET}")
+            break
 
 if __name__ == "__main__":
     main()
