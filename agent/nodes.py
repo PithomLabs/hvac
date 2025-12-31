@@ -14,30 +14,51 @@ PERSONA = "Always empathetic but also quick and professional, highly detailed if
 
 class DecideNode(Node):
     def prep(self, shared):
-        return shared.get("history", [])
+        return {
+            "history": shared.get("history", []),
+            "user_info": shared.get("user_info", {}),
+            "booking_info": shared.get("booking_info", {})
+        }
 
-    def exec(self, history):
+    def exec(self, prep_res):
+        history = prep_res["history"]
+        user = prep_res["user_info"]
+        booking = prep_res["booking_info"]
+        
         prompt = f"""
         You are the 'Manager' of an HVAC Booking Agent.
         Your task is to decide the next step based on the conversation history.
         
         Available Actions:
-        - chat: The user asked a general question or just said hello.
-        - extract: The user provided some info (name, address, issue) that needs to be recorded.
-        - book: All info (Customer details and Slot) is present, and user wants to finalize.
-        - finish: The conversation is naturally over.
+        - chat: General conversation, asking for missing info, explaining value, or suggesting a slot.
+        - extract: The user provided info that is currently 'Missing' in the Profile Status. 
+        - book: ONLY when Name, Address, and Service are present AND the user has agreed to a slot OR is asking to book ASAP.
+        - update: The user is providing additional info (like a gate code) for an EXISTING or confirmed booking.
+        - finish: ONLY AFTER the booking is confirmed/updated or if the user explicitly ends without booking.
+
+        Current Profile Status:
+        - Name: {user.get('name', 'Missing')}
+        - Address: {user.get('address', 'Missing')}
+        - Service: {booking.get('service_type', 'Missing')}
+        - Notes: {booking.get('notes', 'Missing')}
+        - Urgency: {booking.get('urgency', 'Missing')}
+        - Billing: {booking.get('billing_info', 'Missing')}
 
         History: {json.dumps(history)}
 
+        Rule: You MUST use 'extract' if any NEW information in the history is not yet captured in the Profile Status above.
+        Rule: Use 'update' if the user is modifying a previous booking or adding notes (gate code, etc) AND the information IS already in the Profile Status.
+        Rule: 'book' is ONLY allowed if Name, Address, and Service are ALL present in the Profile Status.
+        Rule: If the situation sounds like an emergency, prioritize extraction and then rapid booking.
+
         Respond ONLY in JSON format:
         {{
-          "action": "chat|extract|book|finish",
+          "action": "chat|extract|book|update|finish",
           "reasoning": "brief explanation"
         }}
         """
         response = call_llm(prompt)
         try:
-            # Clean response from markdown if present
             clean_response = response.replace("```json", "").replace("```", "").strip()
             return json.loads(clean_response)
         except Exception as e:
@@ -53,7 +74,7 @@ class ChatNode(Node):
         return shared.get("history", [])
 
     def exec(self, history):
-        system_prompt = f"You are a helpful HVAC Agent. Persona: {PERSONA}. Be concise but empathetic."
+        system_prompt = f"You are a helpful HVAC Agent. Persona: {PERSONA}. Be concise but empathetic. If the user objects to price, explain our value (licensed, bonded, warranties). For safety risks (smell, ice, leak), give immediate instructions."
         response = call_llm(history, system_prompt=system_prompt)
         return response
 
@@ -78,16 +99,11 @@ class ExtractionNode(Node):
         Existing User Info: {prep_res['current_user_info']}
         Existing Booking Info: {prep_res['current_booking_info']}
 
-        Extract the following keys if present:
-        - name
-        - phone
-        - email
-        - address
-        - service_type (e.g. AC Repair, Furnace Maintenance)
-        - issue (description of the problem)
+        Extract keys: name, phone, email, address, service_type, issue, notes, urgency, billing_info.
+        INFER service_type and urgency where possible.
 
-        Respond ONLY in JSON format. If a value is unknown, keep it as null.
-        Example: {{"name": "John", "address": "123 Main St"}}
+        Respond ONLY in JSON format.
+        Example: {{"name": "John", "address": "123 Main St", "notes": "Gate 1234"}}
         """
         response = call_llm(prompt)
         try:
@@ -97,71 +113,55 @@ class ExtractionNode(Node):
             return {}
 
     def post(self, shared, prep_res, exec_res):
-        # Update shared store with new info
         user_keys = ["name", "phone", "email", "address"]
-        booking_keys = ["service_type", "issue"]
-        
+        booking_keys = ["service_type", "issue", "notes", "urgency", "billing_info"]
         shared.setdefault("user_info", {})
         shared.setdefault("booking_info", {})
-
         for k, v in exec_res.items():
             if v:
-                if k in user_keys:
-                    shared["user_info"][k] = v
-                elif k in booking_keys:
-                    shared["booking_info"][k] = v
-        
+                if k in user_keys: shared["user_info"][k] = v
+                elif k in booking_keys: shared["booking_info"][k] = v
         return "default"
 
 class BookingNode(Node):
     def prep(self, shared):
         return {
             "user_info": shared.get("user_info", {}),
-            "booking_info": shared.get("booking_info", {})
+            "booking_info": shared.get("booking_info", {}),
+            "action": shared.get("current_action", "book")
         }
 
     def exec(self, prep_res):
         user = prep_res["user_info"]
         booking = prep_res["booking_info"]
-        
-        # Check if we have enough info
-        required_user = ["name", "address"]
-        required_booking = ["service_type"]
-        
-        if not all(user.get(k) for k in required_user) or not all(booking.get(k) for k in required_booking):
-            return "Missing information to complete booking. Need name, address, and service type."
+        action = prep_res["action"]
+
+        if action == "update":
+            return f"Updated! I've added your notes and preferences to the booking for {user.get('name', 'your address')}."
+
+        if not user.get("name") or not user.get("address") or not booking.get("service_type"):
+            return "Missing information for booking."
 
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
-            
-            # 1. Ensure customer exists or create
-            cursor.execute("INSERT INTO customers (name, phone, email, address) VALUES (?, ?, ?, ?)",
+            cursor.execute("INSERT INTO customers (name, phone, email, address) VALUES (?, ?, ?, ?) ON CONFLICT(name, address) DO UPDATE SET address=excluded.address",
                            (user.get("name"), user.get("phone"), user.get("email"), user.get("address")))
-            customer_id = cursor.lastrowid
+            cursor.execute("SELECT id FROM customers WHERE name = ? AND address = ?", (user.get("name"), user.get("address")))
+            customer_id = cursor.fetchone()[0]
             
-            # 2. Find a slot (simplified: pick first available)
             cursor.execute("SELECT id, start_time FROM available_slots WHERE is_booked = 0 LIMIT 1")
             slot = cursor.fetchone()
+            if not slot: return "No available slots."
             
-            if not slot:
-                return "No available slots found in the database."
-            
-            slot_id = slot["id"]
-            start_time = slot["start_time"]
-            
-            # 3. Create booking
-            cursor.execute("INSERT INTO bookings (customer_id, slot_id, service_name, issue_description) VALUES (?, ?, ?, ?)",
-                           (customer_id, slot_id, booking.get("service_type"), booking.get("issue")))
-            
-            # 4. Mark slot as booked
-            cursor.execute("UPDATE available_slots SET is_booked = 1 WHERE id = ?", (slot_id,))
-            
+            cursor.execute("INSERT INTO bookings (customer_id, slot_id, service_name, issue_description, notes, urgency, billing_info) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                           (customer_id, slot.get("id"), booking.get("service_type"), booking.get("issue"), booking.get("notes"), booking.get("urgency", "Standard"), booking.get("billing_info")))
+            cursor.execute("UPDATE available_slots SET is_booked = 1 WHERE id = ?", (slot.get("id"),))
             conn.commit()
             conn.close()
-            return f"Success! Booking confirmed for {user['name']} on {start_time}. Service: {booking['service_type']}."
+            return f"Success! Booking confirmed for {user['name']} on {slot.get('start_time')}."
         except Exception as e:
-            return f"Error database operation: {e}"
+            return f"Error: {e}"
 
     def post(self, shared, prep_res, exec_res):
         shared.setdefault("history", []).append({"role": "assistant", "content": exec_res})

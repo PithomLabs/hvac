@@ -10,10 +10,30 @@
 - [x] Create `IMPLEMENTATION_PLAN.MD`
 - [x] Design and Implement SQLite Database Schema
 - [x] Implement LLM Wrapper and PocketFlow Nodes
-- [x] Analyze inconsistencies in `CONTEXT_ENGINEERING.txt`
-- [x] Create `IMPLEMENTATION_PLAN.MD`
-- [x] Design and Implement SQLite Database Schema
-- [x] Implement LLM Wrapper and PocketFlow Nodes
 - [x] Generate 100+ Synthetic Scenarios (Dependency-free/JSON)
 - [x] Verify Agent CLI and Refine Prompts
 - [x] Final Review and Walkthrough
+- [x] Generate 10 Offline Test Conversations in `data/qa`
+- [x] Enforce detailed Beads protocol for every user prompt
+- [/] Implement and Verify 20 Gold Standard Scenarios
+    - [ ] A1: The "AC Dead in Heatwave" (Emergency)
+    - [ ] A2: The "Leaking Furnace" (Emergency)
+    - [ ] A3: The "Burning Smell" (Emergency/Safety)
+    - [ ] A4: The "Frozen Coil" (Emergency/Instructional)
+    - [ ] B5: The "Annual Tune-Up" (Routine)
+    - [ ] B6: The "Filter Confusion" (Info-Retrieval)
+    - [ ] B7: The "Smart Thermostat Quote" (Pricing)
+    - [ ] B8: The "Full System Replacement" (Sales)
+    - [ ] C9: The "Reschedule" (Update)
+    - [ ] C10: The "Specific Window" (Constraint)
+    - [ ] C11: The "Gate Code / Access" (Update)
+    - [ ] C12: The "Tenant/Landlord" (Billing)
+    - [ ] D13: The "Price Haggle" (Objection)
+    - [ ] D14: The "Vague Noise" (Ambiguity)
+    - [ ] D15: The "Wrong Service Area" (Geofence)
+    - [ ] D16: The "Callback / Angry Customer" (Sentiment)
+    - [ ] E17: The "Heat Pump vs. Furnace" (Tech Sales)
+    - [ ] E18: The "Duct Cleaning" (Service Menu)
+    - [ ] E19: The "Commercial Property" (Routing)
+    - [ ] E20: The "Warranty Check" (Lookup)
+- [ ] Refactor production `agent/` code with Gold Standard fixes

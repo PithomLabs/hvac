@@ -5,17 +5,14 @@ This plan outlines the design and implementation of an AI-powered HVAC service b
 ## User Review Required
 
 > [!IMPORTANT]
-> **LLM Choice**: We will use OpenRouter (`OPENROUTER_API_KEY`) for all LLM calls. The default model will be chosen based on OpenRouter availability (e.g., `openai/gpt-4o` or similar high-capacity model).
-
-> [!IMPORTANT]
-> **Database Requirement**: A SQLite database must be designed and initialized with the required schema *before* the agent logic is implemented.
+> **Framework Choice**: While [CHALLENGE.MD](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/CHALLENGE.MD) mentions `openai-agents-python`, this plan strictly adheres to the **PocketFlow** framework as per the user's primary objective and the detailed guidance in [GEMINI.md](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/GEMINI.md) and `CONTEXT_ENGINEERING.txt`.
 
 > [!NOTE]
-> **Agent Persona**: The agent will maintain a persona that is "Always empathetic, quick, and professional," providing "high detail" when the situation requires it.
+> **Issue Tracking**: Following [AGENTS.MD](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/AGENTS.MD), all discrete units of work will be tracked using the **Beads (`bd`)** CLI. This implementation plan will be the basis for creating these issues.
 
 ## Proposed Inconsistency Resolutions
 
-| Inconsistency | Source A (`CHALLENGE.MD`) | Source B (`CONTEXT_ENGINEERING..txt`) | Resolution |
+| Inconsistency | Source A ([CHALLENGE.MD](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/CHALLENGE.MD)) | Source B ([CONTEXT_ENGINEERING..txt](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/CONTEXT_ENGINEERING..txt)) | Resolution |
 | :--- | :--- | :--- | :--- |
 | **Framework** | `openai-agents-python` | `PocketFlow` | **PocketFlow** (Minimalist, 100-line core) |
 | **Scenarios** | At least 10 | At least 100 | **100+ scenarios** generated via Batch Processing |
@@ -29,20 +26,16 @@ This plan outlines the design and implementation of an AI-powered HVAC service b
 #### [NEW] [design.md](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/docs/design.md)
 Detailed design document for the HVAC Agent flow, nodes, and shared store.
 
-#### [NEW] [database.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/database.py)
-SQLite database initialization and utility functions for service availability, booking storage, and customer records.
-
 #### [NEW] [utils/call_llm.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/utils/call_llm.py)
-Minimalist wrapper for the OpenRouter API.
+Minimalist wrapper for the LLM API (OpenAI/Gemini).
 
 #### [NEW] [nodes.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/nodes.py)
 Implementation of PocketFlow nodes:
 - `DecideNode`: The router that determines the next step.
-- `ChatNode`: Handles general customer inquiries with the specific empathetic/professional persona.
+- `ChatNode`: Handles general customer inquiries.
 - `ExtractionNode`: Parses unstructured text into YAML-formatted booking details.
-- `BookingNode`: Interacts with the SQLite database to check availability and save bookings.
-- `ScenarioGeneratorNode` (Batch): For synthetic data generation, saving to `data/scenarios.yaml`.
-
+- `BookingNode`: Simulates/Executes the final booking action.
+- `ScenarioGeneratorNode` (Batch): For synthetic data generation.
 
 #### [NEW] [flow.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/flow.py)
 Orchestrates the nodes into a conversational loop and a batch generation flow.

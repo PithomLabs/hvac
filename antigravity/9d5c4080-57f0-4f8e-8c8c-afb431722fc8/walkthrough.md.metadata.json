@@ -1,5 +1,6 @@
 {
   "artifactType":  "ARTIFACT_TYPE_WALKTHROUGH",
-  "summary":  "Final walkthrough of the HVAC booking agent implementation using PocketFlow. All components (DB, LLM wrapper, Nodes, Flow) are verified and functional.",
-  "updatedAt":  "2025-12-30T22:57:40.139722894Z"
+  "summary":  "Comprehensive walkthrough of the successfully implemented 20 Gold Standard scenarios for the HVAC Booking Agent. Documenting node logic, database schema, and QA results.",
+  "updatedAt":  "2025-12-31T00:05:25.057882958Z",
+  "version":  "1"
 }

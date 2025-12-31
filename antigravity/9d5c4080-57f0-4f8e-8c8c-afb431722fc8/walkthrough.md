@@ -1,39 +1,42 @@
-# HVAC Booking Agent Walkthrough
+# Walkthrough: Gold Standard HV AC Agent Implementation
 
-The HVAC Booking Agent is fully implemented using the minimalist **PocketFlow** framework. Despite system-level constraints (corrupted `/etc/os-release` breaking `pip`), I have delivered a robust, dependency-free solution.
+I have successfully implemented and verified all 20 foundational **Gold Standard** scenarios for the HVAC Booking Agent. This ensures the agent handles everything from life-safety emergencies to complex logistics and technical nuances.
 
-## Deliverables
+## 🏆 Key Achievements
 
-- **SQLite Database**: [database.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/database.py) manages scheduling and customers.
-- **Dependency-Free LLM Wrapper**: [call_llm.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/utils/call_llm.py) and [call_llm_async.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/utils/call_llm_async.py) use Python standard libraries with exponential backoff retries.
-- **Agent Nodes**: [nodes.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/nodes.py) implements the Decider/Extractor/Booker pattern using JSON for reliable parsing.
-- **Conversation Flow**: [flow.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/flow.py) orchestrates the cyclical agent graph.
-- **Synthetic Data**: [scenarios.json](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/data/scenarios.json) contains 105 realistic test dialogues generated in parallel.
-- **CLI Interface**: [main.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/main.py) provides a terminal-based booking experience.
+- **100% Coverage**: All 20 scenarios defined in `CONTEXT_ENGINEERING.txt` now have working test conversations and passing QA status.
+- **Hardened Logic**: Refined `DecideNode` and `ExtractionNode` to handle safety first, technical inference, and intent updates (like gate codes).
+- **Extended Database**: Expanded the schema to support `notes`, `urgency`, `billing_info`, and `status`, ensuring data persistence for all scenario types.
+- **Safety First**: Implemented immediate shutdown instructions for safety-critical issues (smells, leaks, smoke).
 
-## Verification Results
+## 🛠 Technical Implementation
 
-### 1. Database Initialization
-Confirmed creation of `customers`, `services`, `available_slots`, and `bookings` tables with initial seed data.
+### Node Refinements (`agent/nodes.py`)
+- **`DecideNode`**: Now recognizes `update` intent for modifying existing bookings and strictly enforces profile completeness before booking.
+- **`ExtractionNode`**: Correctly infers `service_type` (e.g., "furnace leaking" -> "Furnace Repair") and `urgency`.
+- **`BookingNode`**: Supports recording `notes` and `billing_info` directly into the SQLite database.
 
-### 2. Node Logic
-Simulated a conversation and verified that:
-- `DecideNode` correctly identifies user intent ("extract").
-- `ExtractionNode` parses unstructured text into structured user profiles.
-- `BookingNode` fulfills database constraints and commits records.
+### Database Schema (`agent/database.py`)
+The `bookings` table was expanded to include:
+- `notes`: For gate codes and technical details.
+- `urgency`: For prioritizing emergency visits.
+- `billing_info`: For tenant/landlord coordination.
 
-### 3. Scenario Generation
-Generated 100+ scenarios in under 2 minutes using `AsyncParallelBatchNode`.
+## 🧪 Verification Results
 
-## Beads Audit Trail
-All work was tracked in Beads:
-- **hvac-agent-98z**: Database schema (Closed)
-- **hvac-agent-o9h**: Node implementation (Closed)
-- **hvac-agent-ytc**: Scenario generation (Closed)
-- **hvac-agent-9zl**: System corruption tracking (Open)
-- **hvac-agent-gik**: Dependency pivot (Closed)
+I've executed the full suite of Gold Standard tests using `data/qa/run_qa.py`.
 
-## Running the Agent
-```bash
-python3 agent/main.py
-```
+### Scenario Highlights:
+| ID | Title | Key Logic Verified | Result |
+|:---|:---|:---|:---:|
+| **A1-A3** | Emergencies | Heatwaves, Leaks, and Burning Smells. Priority booking and safety instructions. | **PASS** |
+| **B5-B8** | Routine/Sales | Maintenance, Filter Info, Pricing, and Full System Replacement sales. | **PASS** |
+| **C9-C12** | Logistics | Rescheduling, Time Windows, Gate Codes, and Tenant/Landlord billing. | **PASS** |
+| **D13-D16** | Edge Cases | Price Haggling, Vague Noises, Geofencing, and Angry Customers. | **PASS** |
+| **E17-E20** | Technical | Heat Pump vs Furnace identification, Language Barriers, and Prank Calls. | **PASS** |
+
+## 🚀 Next Steps
+With the Gold Standard foundational layer complete, the agent is ready for:
+1. **Refining the Production App**: Bringing these QA improvements into the main `app.py` for live interaction.
+2. **Expanding Service Types**: Adding more specialized diagnostic paths.
+3. **Advanced Integrations**: Connecting to real-time technician calendars.

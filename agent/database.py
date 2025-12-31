@@ -46,10 +46,13 @@ def init_db():
         slot_id INTEGER,
         service_name TEXT,
         issue_description TEXT,
-        status TEXT DEFAULT 'PENDING',
+        notes TEXT,
+        urgency TEXT DEFAULT 'Standard',
+        billing_info TEXT,
+        status TEXT DEFAULT 'Confirmed',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (customer_id) REFERENCES customers (id),
-        FOREIGN KEY (slot_id) REFERENCES available_slots (id)
+        FOREIGN KEY (customer_id) REFERENCES customers(id),
+        FOREIGN KEY (slot_id) REFERENCES available_slots(id)
     )
     """)
 
@@ -60,7 +63,10 @@ def init_db():
             ('AC Repair', 'Fixing cooling issues', 150.0),
             ('Furnace Maintenance', 'Annual heating checkup', 120.0),
             ('Installation', 'New system setup', 500.0),
-            ('Duct Cleaning', 'Cleaning air ducts', 200.0)
+            ('Duct Cleaning', 'Cleaning air ducts', 200.0),
+            ('Urgent Safety Check', 'Emergency inspection', 250.0),
+            ('Emergency Diagnostic', 'Immediate troubleshooting', 300.0),
+            ('System Replacement Consultation', 'Free sales estimate', 0.0)
         ]
         cursor.executemany("INSERT INTO services (name, description, price_base) VALUES (?, ?, ?)", services)
 
@@ -70,7 +76,7 @@ def init_db():
         import datetime
         today = datetime.date.today()
         slots = []
-        for i in range(1, 8):  # Next 7 days
+        for i in range(1, 14):  # Next 14 days
             day = today + datetime.timedelta(days=i)
             # Morning slot
             slots.append((f"{day} 09:00", f"{day} 12:00"))
@@ -78,12 +84,33 @@ def init_db():
             slots.append((f"{day} 13:00", f"{day} 16:00"))
         cursor.executemany("INSERT INTO available_slots (start_time, end_time) VALUES (?, ?)", slots)
 
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS qa_test_runs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        scenario_file TEXT,
+        status TEXT, -- PASS, FAIL
+        logs TEXT
+    )
+    """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS qa_test_results (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        run_id INTEGER,
+        node_name TEXT,
+        action TEXT,
+        details TEXT,
+        FOREIGN KEY (run_id) REFERENCES qa_test_runs(id)
+    )
+    """)
+
     conn.commit()
     conn.close()
     print(f"Database initialized at {DB_PATH}")
 
 def get_db_connection():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=30)
     conn.row_factory = sqlite3.Row
     return conn
 

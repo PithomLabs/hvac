@@ -15,12 +15,10 @@ This plan outlines the design and implementation of an AI-powered HVAC service b
 
 ## Proposed Inconsistency Resolutions
 
-| Inconsistency | Source A (`CHALLENGE.MD`) | Source B (`CONTEXT_ENGINEERING..txt`) | Resolution |
-| :--- | :--- | :--- | :--- |
 | **Framework** | `openai-agents-python` | `PocketFlow` | **PocketFlow** (Minimalist, 100-line core) |
-| **Scenarios** | At least 10 | At least 100 | **100+ scenarios** generated via Batch Processing |
+| **Scenarios** | At least 10 | At least 100 | **100+ scenarios** in JSON format |
 | **Flow Design** | Linear Booking Process | Agent (Router/Decider) Pattern | **Agent Pattern** (Decide -> Tool/Chat -> Decide) |
-| **Data Format** | Unspecified | Structured YAML | **YAML** for all LLM-to-Machine communication |
+| **Data Format** | Unspecified | Structured JSON | **JSON** (Dependency-free fallback) |
 
 ## Proposed Changes
 
@@ -39,9 +37,9 @@ Minimalist wrapper for the OpenRouter API.
 Implementation of PocketFlow nodes:
 - `DecideNode`: The router that determines the next step.
 - `ChatNode`: Handles general customer inquiries with the specific empathetic/professional persona.
-- `ExtractionNode`: Parses unstructured text into YAML-formatted booking details.
+- `ExtractionNode`: Parses unstructured text into JSON-formatted booking details.
 - `BookingNode`: Interacts with the SQLite database to check availability and save bookings.
-- `ScenarioGeneratorNode` (Batch): For synthetic data generation, saving to `data/scenarios.yaml`.
+- `ScenarioGeneratorNode` (Batch): For synthetic data generation, saving to `data/scenarios.json`.
 
 
 #### [NEW] [flow.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/flow.py)
