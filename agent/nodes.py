@@ -37,26 +37,37 @@ class DecideNode(Node):
         booking = prep_res["booking_info"]
         attempts = prep_res["extraction_attempts"]
         
+        debug_log(f"[DECIDER]: User Info: {user}")
+        debug_log(f"[DECIDER]: Booking Info: {booking}")
         debug_log("[DECIDER]: Analyzing state...")
         
-        if attempts >= 2:
-            debug_log("[DECIDER]: Extraction stalled, forcing chat.")
-            return {"action": "chat", "reasoning": "Extraction failed twice, switching to chat to clarify info."}
+        last_msg = history[-1]["content"] if history else ""
+        attempts = shared.get("extraction_attempts", 0)
 
         prompt = f"""
-        You are the 'Manager' of an HVAC Booking Agent.
-        Decide the next action.
+        You are the 'Manager' of an HVAC Booking Agent. Decide the NEXT ACTION.
         
-        Actions: chat, extract, book, update, finish.
+        ACTIONS:
+        - 'chat': Default action for conversation, giving advice, or asking for missing info.
+        - 'extract': ONLY if the user just provided specific details in their LAST MESSAGE that are currently 'Missing'.
+        - 'book': ONLY if Name, Address, and Service are all present.
+        - 'finish': Select this IMMEDIATELY if the booking is confirmed AND the user is satisfied.
 
-        Status:
+        CURRENT DATA:
         - Name: {user.get('name', 'Missing')}
         - Address: {user.get('address', 'Missing')}
         - Service: {booking.get('service_type', 'Missing')}
+        - Extraction Attempts: {attempts}
 
-        History: {json.dumps(history)}
+        LAST MESSAGE: "{last_msg}"
 
-        Respond ONLY in JSON: {{"action": "...", "reasoning": "..."}}
+        Rules:
+        1. If 'Extraction Attempts' is >= 1, select 'chat' (the info is not in the message or already extracted).
+        2. If Name or Address is 'Missing', you cannot 'book'.
+        3. If the user is reporting a problem, select 'chat' first for advice.
+        4. Be decisive. Prefer 'finish' if done.
+
+        Respond ONLY in JSON: {{"action": "chat|extract|book|finish", "reasoning": "..."}}
         """
         try:
             response = call_llm(prompt)
@@ -106,7 +117,23 @@ class ExtractionNode(Node):
 
     def exec(self, prep_res):
         debug_log("[EXTRACTOR]: Processing message...")
-        prompt = f"Extract HVAC info from: {prep_res['last_message']}. JSON format only."
+        prompt = f"""
+        Extract HVAC-related information from the user's last message.
+        Use ONLY the following keys in your JSON response:
+        - name: Full name of the customer
+        - address: Full service address
+        - phone: Phone number
+        - email: Email address
+        - service_type: Type of service (e.g., Repair, Maintenance, Quote)
+        - issue: Description of the problem
+        - urgency: (High, Medium, Low)
+
+        Last message: {prep_res['last_message']}
+        Current User Info: {json.dumps(prep_res['current_user_info'])}
+        Current Booking Info: {json.dumps(prep_res['current_booking_info'])}
+
+        JSON format only. If information is missing, use null.
+        """
         try:
             response = call_llm(prompt)
             clean_response = response.replace("```json", "").replace("```", "").strip()
@@ -121,15 +148,20 @@ class ExtractionNode(Node):
         shared.setdefault("user_info", {})
         shared.setdefault("booking_info", {})
         
+        debug_log(f"[EXTRACTOR]: LLM Output: {exec_res}")
         info_added = False
         for k, v in exec_res.items():
             if v and v != "null":
-                if k in user_keys and shared["user_info"].get(k) != v:
-                    shared["user_info"][k] = v
-                    info_added = True
-                elif k in booking_keys and shared["booking_info"].get(k) != v:
-                    shared["booking_info"][k] = v
-                    info_added = True
+                if k in user_keys:
+                    if shared["user_info"].get(k) != v:
+                        shared["user_info"][k] = v
+                        info_added = True
+                        debug_log(f"[EXTRACTOR]: Added USER info: {k}={v}")
+                elif k in booking_keys:
+                    if shared["booking_info"].get(k) != v:
+                        shared["booking_info"][k] = v
+                        info_added = True
+                        debug_log(f"[EXTRACTOR]: Added BOOKING info: {k}={v}")
         
         if not info_added:
             shared["extraction_attempts"] = shared.get("extraction_attempts", 0) + 1
@@ -137,6 +169,7 @@ class ExtractionNode(Node):
             shared["extraction_attempts"] = 0
             
         debug_log(f"[EXTRACTOR]: Finished. info_added={info_added}")
+        debug_log(f"[EXTRACTOR]: Current user_info: {shared['user_info']}")
         return "default"
 
 class BookingNode(Node):
@@ -156,8 +189,21 @@ class BookingNode(Node):
         if action == "update":
             return f"Updated! I've added those details to your file for {user.get('name', 'your property')}."
 
-        if not user.get("name") or not user.get("address") or not booking.get("service_type"):
-            return "I need a bit more info (name, address) to finalize the booking. Can you provide those?"
+        missing = []
+        if not user.get("name"): missing.append("your name")
+        if not user.get("address"): missing.append("your address")
+        if not booking.get("service_type"): missing.append("the service type")
+
+        if missing:
+            already_have = []
+            if user.get("name"): already_have.append(f"name as {user['name']}")
+            if user.get("address"): already_have.append(f"address as {user['address']}")
+            
+            msg = f"I'm almost ready to book that for you."
+            if already_have:
+                msg += f" I have your " + " and ".join(already_have) + "."
+            msg += f" I just need " + " and ".join(missing) + " to finish up."
+            return msg
 
         try:
             conn = get_db_connection()

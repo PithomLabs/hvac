@@ -1,0 +1,20 @@
+# Implementation Plan: Multi-Agent HVAC Simulation
+
+... (rest of the plan remains similar) ...
+
+## Interactive Simulation Architecture
+
+### [NEW] [human_simulator.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/human_simulator.py)
+A standalone script that:
+- Loads a scenario context.
+- Uses `nvidia/nemotron-nano-9b-v2:free`.
+- Acts as a "Human" in the loop.
+
+### [NEW] [simulation_bridge.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/data/qa/simulation_bridge.py)
+A terminal orchestrator that:
+- Spawns [agent/main.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/main.py) (Mimo) and `agent/human_simulator.py` (Nemotron).
+- Sets appropriate `LLM_MODEL` env vars for each.
+- Pipes stdout of one to stdin of the other.
+- Prints the "Terminal Output" of both agents to your screen in real-time.
+
+...

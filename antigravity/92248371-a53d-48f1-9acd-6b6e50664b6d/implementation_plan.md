@@ -1,0 +1,33 @@
+# Implementation Plan: Multi-Agent HVAC Simulation
+
+This plan outlines the creation of a multi-agent simulation environment where an AI-powered HVAC Agent interacts with an AI-powered Human Simulator to test various booking scenarios.
+
+## Proposed Changes
+
+### [NEW] [run_multi_agent.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/data/qa/run_multi_agent.py)
+
+A new script that orchestrates the simulation:
+- **Human Simulator**: NVIDIA Nemotron-9B-v2 (simulating the customer).
+- **HVAC Agent**: Xiaomi Mimo-v2-Flash (using existing `agent/` logic).
+- **Process**:
+    1. Parse a Gold Standard scenario from `data/qa/gold_*.md`.
+    2. Prompt the Human Simulator with the scenario context and objective.
+    3. Initialize the HVAC Agent with its persona.
+    4. Run an iterative loop where:
+        - The Human Simulator generates a message.
+        - The HVAC Agent processes the message and generates a response.
+        - Messages are logged and added to the history of both agents.
+    5. Export the full conversation as a markdown file in `data/qa/multi_agent/`.
+
+## Multi-Agent Configuration
+
+| Role | Model | Purpose |
+| :--- | :--- | :--- |
+| HVAC Agent | `xiaomi/mimo-v2-flash:free` | Process bookings, advice, and scheduling |
+| Human Simulator | `nvidia/nemotron-nano-9b-v2:free` | Act as the customer based on a provided scenario |
+
+## Verification Plan
+
+### Manual Verification
+- Run the simulation for `gold_a1_ac_dead.md`.
+- Inspect `data/qa/multi_agent/gold_a1_ac_dead_multi_agent.md` for conversational quality and adherence to the scenario.

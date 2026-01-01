@@ -334,3 +334,106 @@ def main():
     agent_description = f"""
 {BOLD}{BLUE}--- HVAC Booking AI Assistant ---{RESET}
 Powered by {YELLOW}PocketFlow{RESET} and {YELLOW}OpenRouter{RESET} {YELLOW}{model}{RESET}.
+
+
+31. under qa/data folder create multi_agent subfolder and use the code under agent folder
+
+the goal is to spawn 2 AI agents (one using xiaomi/mimo-v2-flash:free as LLM) and nvidia/nemotron-nano-9b-v2:free as human)
+
+improvise run_qa.py under data/aq folder, use the 20 md files gold standard scenarios as initial prompt (the file is prefixed with gold_)
+
+expected: write 20 md files as chat conversation between the 2 AI agents mentioned above, name it based on the gold_* filename but add suffix multi_agent (e.g. gold_c12_billing_multi_agent.md), write all the 20 files under the created multi_agent subfolder
+
+do not modify the code under agent folder (it is fully tested already)
+
+let us dry run first for testing one file only for now, let us start with gold_a1_ac_dead.md, we can do the other 19 later if all goes well
+
+ask if you need to clarify anything, I will say next when to give the go signal to proceed
+
+
+32. let us simplify the testing
+
+I want you to spawn the 2 AI agent in two CLI terminal
+
+I want to see the actual output of the conversation as they go along as if I am manually doing it, just to clarify you need to spawn the AI aagent based on the agent folder
+
+ensure that you override the env var for the LLM model before spawning the AI agent
+- xiaomi/mimo-v2-flash:free as AI agent LLM
+- nvidia/nemotron-nano-9b-v2:free as human
+
+expected: I want to see terminals spawned
+
+ask if you need clarification before I say go to proceed
+
+Antigravity:
+I'll start by updating the 
+task.md
+ and 
+implementation_plan.md
+ to reflect this new interactive terminal simulation approach.
+
+Before I proceed with the implementation, I have one clarification question:
+
+Clarification on "Two Terminals": Would you like me to:
+
+Option A (Orchestration): Create a bridge script that spawns both agents as subprocesses and displays their conversation live in a single view with distinct colors/headers for each? (This is more reliable for automation).
+Option B (Manual Simulation): Literally open two independent terminal sessions (using the run_command tool) where I would manually copy the HVAC Agent's output into the Human Simulator's input, and vice-versa? (This is closer to "manually doing it" but much slower).
+I recommend Option A as it allows the two AI agents to "talk" to each other at full speed while you watch the output stream in real-time.
+
+reply:
+Option A
+
+Antigravity:
+I have completed the interactive simulation bridge (Option A).
+
+You can see the live interaction between Mimo (Agent) and Nemotron (Human) in the terminal output of my last command. The bridge orchestrates both agents, passing messages between them and displaying their internal CLI logic (like [DECIDER] and [CHAT] logs).
+
+I noticed that the Agent (Mimo) sometimes chooses to "Finish" the session quite early after providing initial advice. This depends on the specific model's decision-making style.
+
+Should I proceed to run simulations for the remaining 19 Gold Standard scenarios, or would you like to tweak the interaction further?
+
+
+33. let us focus with dry run first, I am not seeing the 2 terminals being opened before my eyes
+
+also, I do not see the actual md conversation generated between the 2 AI agents
+
+34. I noticed that there was Sarah mentioned early in the conversation. However, I need the conversation to begin anew. Start the prompt with the first line marked as **Human**
+
+e.g. on gold_a1_ac_dead.md the first line says:
+
+**Human**: Hi there, it's 95 degrees and my AC just stopped making noise. I have a baby in the house and it's getting really hot. Can you help?
+
+That should be the first prompt for this chat simulation, got it?
+
+35. wait, version the md files so I would get the history
+
+also, I want you to write to the md file the actual conversation as they go along while waiting for the other agent to reply, ensure that the entire conversation was written to the md file
+
+also, when the second agent is responding, assume a human persona to sound like a human (not as AI agent)
+
+ask if you need clarification
+
+36. the entire conversation was incomplete, this is the only ones recorded:
+
+# Multi-Agent Conversation Simulation
+
+**Scenario**: data/qa/gold_a1_ac_dead.md
+
+**Human**: Hi there, it's 95 degrees and my AC just stopped making noise. I have a baby in the house and it's getting really hot. Can you help?
+
+**AI Agent**: Oh my, I can absolutely appreciate how stressful that must feel — 95 degrees is uncomfortable for anyone, but with a baby in the house, it’s definitely a safety concern. Let’s get this sorted as quickly as we can.
+
+**Human**: "Thanks for the quick response! I’m trying to keep the fan running but it’s not cutting it. Do you have any tips to keep the baby cool while you’re on the way? I really appreciate your help."
+
+**AI Agent**: I’m so glad to help, and I completely understand—those indoor temperatures can climb fast, especially without the cooling cycle running. Here are a few practical, baby-safe tips you can use right now to help keep your little one cool while we get a technician on the way:
+
+
+37. let us simplify the logic here, instead of displaying it to the CLI terminal, focus on writing the LLM response as you received it and write it directly to the versioned md file
+
+38. let us simplify the logic here, instead of displaying it to the CLI terminal, focus on writing the LLM response as you received it and write it directly to the versioned md file
+
+write your proposal as PROPOSAL.MD on how to vastly improve this, look at gold_a1_ac_dead_multi_agent_v6.md, it is repeating the reply which is not entirely accurate
+
+I will say go when to proceed
+
+39. stop the simulation as quickly as possible if you think the issue is already resolved to avoid unnecessary conversation

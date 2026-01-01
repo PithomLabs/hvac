@@ -1,0 +1,11 @@
+# Implementation Plan: Multi-Agent HVAC Simulation
+
+... (rest of the plan remains similar) ...
+
+## Simulation Script: `run_multi_agent.py`
+The script will use two separate [call_llm](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/utils/call_llm.py#7-59) abstractions (or simply pass the model name to the utility) to simulate the two roles.
+
+- **HVAC Agent (Mimo)**: Uses [agent/nodes.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/nodes.py) logic which calls [utils/call_llm.py](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/utils/call_llm.py). I will override `LLM_MODEL` environment variable before calling the agent's nodes.
+- **Human Simulator (Nemotron)**: Uses a custom [call_llm](file:///home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/utils/call_llm.py#7-59) call with a specific system prompt defined in the script.
+
+...
