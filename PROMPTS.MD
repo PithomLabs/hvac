@@ -437,3 +437,11 @@ write your proposal as PROPOSAL.MD on how to vastly improve this, look at gold_a
 I will say go when to proceed
 
 39. stop the simulation as quickly as possible if you think the issue is already resolved to avoid unnecessary conversation
+
+40. I will say when to proceed with the 19 gold standard scenarios, let us refine the dry run first
+
+I want the conversation to be at least 5 back and forth long, then stop if you think it is resolved
+
+
+41. wait, ensure that the conversation is resolved or at least with proper closure, test dry run again
+

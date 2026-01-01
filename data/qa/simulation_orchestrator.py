@@ -35,7 +35,7 @@ def log_to_file(file_path, text, is_new=False):
             f.write("# Multi-Agent Conversation Simulation (Single-Process)\n\n")
         f.write(text + "\n\n")
 
-def run_human_simulator(history, scenario_content):
+def run_human_simulator(history, scenario_content, force_continue=False):
     """Simulates the human side directly using LLM call."""
     human_intent_match = re.search(r'## Human Intent\n(.*?)\n##', scenario_content, re.DOTALL)
     human_intent = human_intent_match.group(1).strip() if human_intent_match else "You are a customer needing HVAC repair."
@@ -45,16 +45,23 @@ def run_human_simulator(history, scenario_content):
         role = "Agent" if turn["role"] == "assistant" else "Human"
         formatted_history += f"{role}: {turn['content']}\n"
 
+    human_name = human_intent.split('is ')[-1] if 'is ' in human_intent else 'Sarah Jenkins'
     system_prompt = f"""
-    You are a REAL PERSON (a customer) interacting with an HVAC booking agent.
+    You are {human_name}, a REAL customer needing HVAC help.
     STRICT RULES:
-    1. NEVER say "I am an AI". Respond naturally.
-    2. Your goal: {human_intent}
-    3. If the agent has confirmed the booking and you have no more questions, finish the conversation.
-    4. If you are done, respond with exactly: [FINISHED]
+    1. NEVER say "I am an AI". Act 100% human.
+    2. Respond ONLY with what you would say to the agent.
+    3. NEVER prefix your response with "{human_name}:", "Human:", or any role.
+    4. NEVER role-play as the agent or summarize the chat.
+    5. You are NOT an expert. You are just a stressed customer.
+    6. Respond in SHORT, natural sentences (1-2 sentences).
+    7. If the agent confirmed your booking and you are satisfied, say thanks/goodbye and add [FINISHED].
     """
     
-    prompt = f"Previous conversation:\n{formatted_history}\n\nAgent just spoke. What is your response? (Respond with [FINISHED] if done)"
+    if force_continue:
+        system_prompt += "\n7. IMPORTANT: We need more information. Ask a question about the technician's experience, the potential repair cost, or some other detail to keep things moving."
+
+    prompt = f"### CONVERSATION HISTORY\n{formatted_history}\n\nAJENT JUST SPOKE. {human_name}, what is your reply to the agent?"
     
     os.environ["LLM_MODEL"] = "nvidia/nemotron-nano-9b-v2:free"
     response = call_llm(prompt, system_prompt=system_prompt).strip()
@@ -85,7 +92,8 @@ def run_orchestration(scenario_file):
     shared["history"].append({"role": "user", "content": first_msg})
 
     turn_count = 0
-    while turn_count < 10: # Balanced turn limit
+    min_turns = 5
+    while turn_count < 15: # Max turns
         # --- AGENT TURN ---
         os.environ["LLM_MODEL"] = "xiaomi/mimo-v2-flash:free"
         flow.run(shared)
@@ -95,21 +103,25 @@ def run_orchestration(scenario_file):
             log_to_file(output_path, f"**AI Agent**: {agent_msg}")
             print(f"{BLUE}Agent responded. ({len(agent_msg)} chars){RESET}")
         
-        if shared.get("current_action") == "finish":
-            print(f"{GREEN}Agent ended simulation.{RESET}")
+        if shared.get("current_action") == "finish" and turn_count >= min_turns:
+            print(f"{GREEN}Agent ended simulation (Turn {turn_count+1}).{RESET}")
             break
 
         # --- HUMAN TURN ---
-        human_msg = run_human_simulator(shared["history"], scenario_content)
+        force_continue = turn_count < min_turns
+        human_msg = run_human_simulator(shared["history"], scenario_content, force_continue=force_continue)
         
-        if "[FINISHED]" in human_msg:
-            print(f"{GREEN}Human ended simulation.{RESET}")
+        is_finished = "[FINISHED]" in human_msg
+        clean_msg = human_msg.replace("[FINISHED]", "").strip()
+        
+        if clean_msg:
+            log_to_file(output_path, f"**Human**: {clean_msg}")
+            shared["history"].append({"role": "user", "content": clean_msg})
+            print(f"{MAGENTA}Human responded. (Turn {turn_count+1}){RESET}")
+        
+        if is_finished and not force_continue:
+            print(f"{GREEN}Human ended simulation (Turn {turn_count+1}).{RESET}")
             break
-            
-        if human_msg:
-            log_to_file(output_path, f"**Human**: {human_msg}")
-            shared["history"].append({"role": "user", "content": human_msg})
-            print(f"{MAGENTA}Human responded.{RESET}")
         
         turn_count += 1
 

@@ -17,10 +17,9 @@ GREEN = "\033[92m"
 YELLOW = "\033[93m"
 RESET = "\033[0m"
 
-PERSONA = "Always empathetic but also quick and professional, highly detailed if need be."
+PERSONA = "Empathetic, professional, and efficient. No fluff, just direct help."
 
-def debug_log(msg):
-    print(f"  {YELLOW}{msg}{RESET}", flush=True)
+
 
 class DecideNode(Node):
     def prep(self, shared):
@@ -37,12 +36,8 @@ class DecideNode(Node):
         booking = prep_res["booking_info"]
         attempts = prep_res["extraction_attempts"]
         
-        debug_log(f"[DECIDER]: User Info: {user}")
-        debug_log(f"[DECIDER]: Booking Info: {booking}")
-        debug_log("[DECIDER]: Analyzing state...")
         
         last_msg = history[-1]["content"] if history else ""
-        attempts = shared.get("extraction_attempts", 0)
 
         prompt = f"""
         You are the 'Manager' of an HVAC Booking Agent. Decide the NEXT ACTION.
@@ -74,14 +69,13 @@ class DecideNode(Node):
             clean_response = response.replace("```json", "").replace("```", "").strip()
             return json.loads(clean_response)
         except Exception as e:
-            debug_log(f"[DECIDER ERROR]: {e}")
+            pass
             return {"action": "chat", "reasoning": f"Error: {e}"}
 
     def post(self, shared, prep_res, exec_res):
         action = exec_res.get("action", "chat")
         shared["current_action"] = action
         shared["reasoning"] = exec_res.get("reasoning")
-        debug_log(f"[DECIDER]: Selected Action -> {action}")
         return action
 
 class ChatNode(Node):
@@ -89,14 +83,20 @@ class ChatNode(Node):
         return shared.get("history", [])
 
     def exec(self, history):
-        debug_log("[CHAT]: Thinking...")
-        system_prompt = f"You are a helpful HVAC Agent. Persona: {PERSONA}. If the user asks a technical question or reports a safety issue, give advice and guide to booking."
+        system_prompt = f"""
+        You are a professional HVAC Booking Agent. Persona: {PERSONA}.
+        STRICT RULES:
+        1. Respond ONLY with the text you would say to the customer.
+        2. NEVER include internal thoughts, drafting, metadata, or 'Agent:' prefixes.
+        3. NEVER address the user by their persona name unless they've introduced themselves.
+        4. Be empathetic but concise.
+        """
         try:
             response = call_llm(history, system_prompt=system_prompt)
-            debug_log(f"[CHAT]: LLM Response received ({len(response)} chars)")
-            return response
+            pass
+            return response.strip()
         except Exception as e:
-            debug_log(f"[CHAT ERROR]: {e}")
+            pass
             traceback.print_exc()
             return f"I'm sorry, I'm having trouble connecting to my brain right now. Error: {e}"
 
@@ -104,7 +104,7 @@ class ChatNode(Node):
         shared.setdefault("history", []).append({"role": "assistant", "content": exec_res})
         shared["last_response"] = exec_res
         shared["extraction_attempts"] = 0
-        debug_log("[CHAT]: Post-turn completed.")
+        pass
         return "default"
 
 class ExtractionNode(Node):
@@ -116,7 +116,6 @@ class ExtractionNode(Node):
         }
 
     def exec(self, prep_res):
-        debug_log("[EXTRACTOR]: Processing message...")
         prompt = f"""
         Extract HVAC-related information from the user's last message.
         Use ONLY the following keys in your JSON response:
@@ -139,7 +138,7 @@ class ExtractionNode(Node):
             clean_response = response.replace("```json", "").replace("```", "").strip()
             return json.loads(clean_response)
         except Exception as e:
-            debug_log(f"[EXTRACTOR ERROR]: {e}")
+            pass
             return {}
 
     def post(self, shared, prep_res, exec_res):
@@ -148,7 +147,6 @@ class ExtractionNode(Node):
         shared.setdefault("user_info", {})
         shared.setdefault("booking_info", {})
         
-        debug_log(f"[EXTRACTOR]: LLM Output: {exec_res}")
         info_added = False
         for k, v in exec_res.items():
             if v and v != "null":
@@ -156,20 +154,16 @@ class ExtractionNode(Node):
                     if shared["user_info"].get(k) != v:
                         shared["user_info"][k] = v
                         info_added = True
-                        debug_log(f"[EXTRACTOR]: Added USER info: {k}={v}")
                 elif k in booking_keys:
                     if shared["booking_info"].get(k) != v:
                         shared["booking_info"][k] = v
                         info_added = True
-                        debug_log(f"[EXTRACTOR]: Added BOOKING info: {k}={v}")
         
         if not info_added:
             shared["extraction_attempts"] = shared.get("extraction_attempts", 0) + 1
         else:
             shared["extraction_attempts"] = 0
             
-        debug_log(f"[EXTRACTOR]: Finished. info_added={info_added}")
-        debug_log(f"[EXTRACTOR]: Current user_info: {shared['user_info']}")
         return "default"
 
 class BookingNode(Node):
@@ -181,7 +175,6 @@ class BookingNode(Node):
         }
 
     def exec(self, prep_res):
-        debug_log("[BOOKER]: Finalizing...")
         user = prep_res["user_info"]
         booking = prep_res["booking_info"]
         action = prep_res["action"]
@@ -226,12 +219,10 @@ class BookingNode(Node):
             conn.close()
             return "Booking system confirmed the details, but I'm finalizing the slot. One moment."
         except Exception as e:
-            debug_log(f"[BOOKER ERROR]: {e}")
             return f"Error finalizing: {e}"
 
     def post(self, shared, prep_res, exec_res):
         shared.setdefault("history", []).append({"role": "assistant", "content": exec_res})
         shared["last_response"] = exec_res
         shared["extraction_attempts"] = 0
-        debug_log("[BOOKER]: Done.")
         return "default"

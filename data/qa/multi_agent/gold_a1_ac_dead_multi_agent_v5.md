@@ -1,4 +1,4 @@
-# Multi-Agent Conversation Simulation
+# Multi-Agent Conversation Simulation (Single-Process)
 
 **Scenario**: data/qa/gold_a1_ac_dead.md
 
