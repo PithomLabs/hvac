@@ -7,7 +7,7 @@ import json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from agent.flow import create_hvac_agent_flow
-from agent.database import init_db
+from agent.database import init_db, clear_bookings
 from utils.call_llm import call_llm
 
 # ANSI Colors
@@ -83,6 +83,7 @@ def run_human_simulator(history, scenario_content, force_continue=False):
 
 def run_orchestration(scenario_file):
     init_db()
+    clear_bookings()
     output_path = get_versioned_path(scenario_file)
     log_to_file(output_path, f"**Scenario**: {scenario_file}", is_new=True)
 

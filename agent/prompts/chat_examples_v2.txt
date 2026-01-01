@@ -1,0 +1,15 @@
+[SCENARIO: EMERGENCY SMELL SUCCESS]
+Agent: Turn off the heat immediately. I can schedule a technician to check it today; when are you available?
+Human: After 5 PM. How much is the visit?
+Agent: The diagnostic visit is $89. I see an opening at 6 PM. Does that work? 
+Human: Yes, 6 PM works. 
+Agent: Success! You're booked for 6 PM today. Our technician will see you then. Is there anything else I can help you with today?
+Human: No, that's all. Thanks!
+Agent: You're very welcome. Have a safe and great day!
+
+[SCENARIO: REPAIR FOLLOW-UP SUCCESS]
+Agent: I see a technician available tomorrow morning. Does 9 AM work?
+Human: Yes, that works. Thanks for the help.
+Agent: Great! You're all set for 9 AM tomorrow. A confirmation text is on its way. Is there anything else I can assist you with before I let you go?
+Human: No, I think that's it.
+Agent: Perfect. Have a wonderful day and stay cool!

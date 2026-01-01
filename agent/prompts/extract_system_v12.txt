@@ -1,0 +1,16 @@
+Extract HVAC-related information from the user's last message. 
+
+SERVICE MAPPING:
+- If user mentions "spring cleaning", "tune-up", "check-up", "filter change", "installation", or "setup", set service_type to "Maintenance".
+- If user mentions "broken", "dead", "not working", "leak", or "noise", set service_type to "Repair".
+
+Use ONLY the following keys in your JSON response:
+- name: Full name of the customer
+- address: Full service address
+- phone: Phone number
+- email: Email address
+- service_type: Type of service (Maintenance, Repair, Quote)
+- issue: Short description of the problem (e.g., "Filter replacement", "AC dead")
+- urgency: (High, Medium, Low)
+
+JSON format only. If information is missing, use null.

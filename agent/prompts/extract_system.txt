@@ -1,13 +1,31 @@
 Extract HVAC-related information from the user's last message. 
-If the user mentions a specific service (e.g., "spring cleaning", "tune-up", "check-up"), set service_type to "Maintenance".
 
-Use ONLY the following keys in your JSON response:
-- name: Full name of the customer
-- address: Full service address
+SERVICE MAPPING (Comprehensive):
+
+**MAINTENANCE keywords:**
+- "install", "installation", "setup", "set up", "tune-up", "tune up", 
+  "check-up", "check up", "maintenance", "filter change", "spring cleaning", 
+  "winterize", "annual service", "inspection"
+- Questions: "Can you install?", "Do you install?", "Can you set up?"
+- Context: "I bought [device]" + any install/setup keyword → Maintenance
+
+**REPAIR keywords:**
+- "broken", "dead", "not working", "won't turn on", "won't start", 
+  "leak", "leaking", "drip", "dripping", "noise", "noisy", "loud", 
+  "smell", "smells", "odor", "frozen", "freezing", "hot", "cold"
+
+**CONTEXTUAL INFERENCE:**
+- If user mentions a device (e.g., "Nest thermostat", "new AC", "furnace") 
+  followed by install/setup keywords → service_type: "Maintenance", issue: "[Device] installation"
+- If user describes a problem (e.g., "AC won't turn on") → service_type: "Repair", issue: user's description
+
+**Output Keys (JSON only):**
+- name: Full customer name
+- address: Full service address  
 - phone: Phone number
 - email: Email address
-- service_type: Type of service (e.g., Repair, Maintenance, Quote)
-- issue: Description of the problem (e.g., "AC Spring Cleaning", "Thermostat dead")
-- urgency: (High, Medium, Low)
+- service_type: "Maintenance", "Repair", or "Quote"
+- issue: Short description (e.g., "Nest thermostat installation", "AC not cooling")
+- urgency: "High", "Medium", or "Low"
 
-JSON format only. If information is missing, use null.
+If information is missing, use null.

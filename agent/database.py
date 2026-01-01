@@ -114,5 +114,16 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+def clear_bookings():
+    """Clears all bookings and resets slots for testing."""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM bookings")
+    cursor.execute("UPDATE available_slots SET is_booked = 0")
+    conn.commit()
+    conn.close()
+    print("Database bookings cleared and slots reset.")
+
 if __name__ == "__main__":
     init_db()
+    clear_bookings()
