@@ -17,6 +17,11 @@ GREEN = "\033[92m"
 YELLOW = "\033[93m"
 RESET = "\033[0m"
 
+def load_prompt(filename):
+    path = os.path.join(os.path.dirname(__file__), "prompts", filename)
+    with open(path, "r") as f:
+        return f.read().strip()
+
 PERSONA = "Empathetic, professional, and efficient. No fluff, just direct help."
 
 
@@ -27,7 +32,8 @@ class DecideNode(Node):
             "history": shared.get("history", []),
             "user_info": shared.get("user_info", {}),
             "booking_info": shared.get("booking_info", {}),
-            "extraction_attempts": shared.get("extraction_attempts", 0)
+            "extraction_attempts": shared.get("extraction_attempts", 0),
+            "confirmed": shared.get("booking_info", {}).get("confirmed", False)
         }
 
     def exec(self, prep_res):
@@ -39,28 +45,18 @@ class DecideNode(Node):
         
         last_msg = history[-1]["content"] if history else ""
 
+        system_prompt = load_prompt("decide_system.txt")
         prompt = f"""
-        You are the 'Manager' of an HVAC Booking Agent. Decide the NEXT ACTION.
-        
-        ACTIONS:
-        - 'chat': Default action for conversation, giving advice, or asking for missing info.
-        - 'extract': ONLY if the user just provided specific details in their LAST MESSAGE that are currently 'Missing'.
-        - 'book': ONLY if Name, Address, and Service are all present.
-        - 'finish': Select this IMMEDIATELY if the booking is confirmed AND the user is satisfied.
+        {system_prompt}
 
         CURRENT DATA:
         - Name: {user.get('name', 'Missing')}
         - Address: {user.get('address', 'Missing')}
         - Service: {booking.get('service_type', 'Missing')}
+        - Booking Confirmed: {'Yes' if prep_res.get('confirmed') else 'No'}
         - Extraction Attempts: {attempts}
 
         LAST MESSAGE: "{last_msg}"
-
-        Rules:
-        1. If 'Extraction Attempts' is >= 1, select 'chat' (the info is not in the message or already extracted).
-        2. If Name or Address is 'Missing', you cannot 'book'.
-        3. If the user is reporting a problem, select 'chat' first for advice.
-        4. Be decisive. Prefer 'finish' if done.
 
         Respond ONLY in JSON: {{"action": "chat|extract|book|finish", "reasoning": "..."}}
         """
@@ -73,24 +69,41 @@ class DecideNode(Node):
             return {"action": "chat", "reasoning": f"Error: {e}"}
 
     def post(self, shared, prep_res, exec_res):
-        action = exec_res.get("action", "chat")
-        shared["current_action"] = action
-        shared["reasoning"] = exec_res.get("reasoning")
-        return action
+        shared["current_action"] = exec_res["action"]
+        shared["action_reasoning"] = exec_res.get("reasoning", "N/A")
+        if exec_res["action"] == "extract":
+            shared["extraction_attempts"] = shared.get("extraction_attempts", 0) + 1
+        if exec_res["action"] == "finish":
+            shared["last_response"] = "*END OF CONVERSATION*"
+        return exec_res["action"]
 
 class ChatNode(Node):
     def prep(self, shared):
-        return shared.get("history", [])
+        return {
+            "history": shared.get("history", []),
+            "user_info": shared.get("user_info", {}),
+            "booking_info": shared.get("booking_info", {}),
+            "confirmed": shared.get("booking_info", {}).get("confirmed", False)
+        }
 
-    def exec(self, history):
-        system_prompt = f"""
-        You are a professional HVAC Booking Agent. Persona: {PERSONA}.
-        STRICT RULES:
-        1. Respond ONLY with the text you would say to the customer.
-        2. NEVER include internal thoughts, drafting, metadata, or 'Agent:' prefixes.
-        3. NEVER address the user by their persona name unless they've introduced themselves.
-        4. Be empathetic but concise.
+    def exec(self, prep_res):
+        history = prep_res["history"]
+        user = prep_res["user_info"]
+        booking = prep_res["booking_info"]
+        confirmed = 'Yes' if prep_res["confirmed"] else 'No'
+        
+        system_main = load_prompt("chat_system.txt")
+        examples = load_prompt("chat_examples.txt")
+        
+        context_block = f"""
+        CURRENT BOOKING STATUS:
+        - Booking Confirmed: {confirmed}
+        - Customer Name: {user.get('name', 'Missing')}
+        - Service Address: {user.get('address', 'Missing')}
+        - Service Type: {booking.get('service_type', 'Missing')}
         """
+        
+        system_prompt = f"{system_main}\n\n{context_block}\n\n{examples}"
         try:
             response = call_llm(history, system_prompt=system_prompt)
             pass
@@ -104,7 +117,8 @@ class ChatNode(Node):
         shared.setdefault("history", []).append({"role": "assistant", "content": exec_res})
         shared["last_response"] = exec_res
         shared["extraction_attempts"] = 0
-        pass
+        if "Success!" in exec_res:
+            shared.setdefault("booking_info", {})["confirmed"] = True
         return "default"
 
 class ExtractionNode(Node):
@@ -116,16 +130,9 @@ class ExtractionNode(Node):
         }
 
     def exec(self, prep_res):
+        system_prompt = load_prompt("extract_system.txt")
         prompt = f"""
-        Extract HVAC-related information from the user's last message.
-        Use ONLY the following keys in your JSON response:
-        - name: Full name of the customer
-        - address: Full service address
-        - phone: Phone number
-        - email: Email address
-        - service_type: Type of service (e.g., Repair, Maintenance, Quote)
-        - issue: Description of the problem
-        - urgency: (High, Medium, Low)
+        {system_prompt}
 
         Last message: {prep_res['last_message']}
         Current User Info: {json.dumps(prep_res['current_user_info'])}
@@ -225,4 +232,6 @@ class BookingNode(Node):
         shared.setdefault("history", []).append({"role": "assistant", "content": exec_res})
         shared["last_response"] = exec_res
         shared["extraction_attempts"] = 0
+        if "Success!" in exec_res:
+            shared.setdefault("booking_info", {})["confirmed"] = True
         return "default"

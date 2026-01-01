@@ -1,0 +1,13 @@
+Extract HVAC-related information from the user's last message. 
+If the user mentions a specific service (e.g., "spring cleaning", "tune-up", "check-up"), set service_type to "Maintenance".
+
+Use ONLY the following keys in your JSON response:
+- name: Full name of the customer
+- address: Full service address
+- phone: Phone number
+- email: Email address
+- service_type: Type of service (e.g., Repair, Maintenance, Quote)
+- issue: Description of the problem (e.g., "AC Spring Cleaning", "Thermostat dead")
+- urgency: (High, Medium, Low)
+
+JSON format only. If information is missing, use null.
