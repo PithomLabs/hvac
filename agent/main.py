@@ -16,9 +16,17 @@ RED = "\033[91m"
 BOLD = "\033[1m"
 RESET = "\033[0m"
 
-AGENT_DESCRIPTION = f"""
+def main():
+    # Ensure database is initialized
+    init_db()
+
+    model = os.environ.get("LLM_MODEL")
+    if not model:
+        model = "openai/gpt-4o-mini"
+    
+    agent_description = f"""
 {BOLD}{BLUE}--- HVAC Booking AI Assistant ---{RESET}
-Powered by {YELLOW}PocketFlow{RESET} and {YELLOW}OpenRouter{RESET}.
+Powered by {YELLOW}PocketFlow{RESET} and {YELLOW}OpenRouter{RESET} {YELLOW}{model}{RESET}.
 
 I am an AI-powered HVAC service assistant designed to help you book repairs, maintenance, 
 and consultations with extreme professionalism and empathy. I can handle:
@@ -29,10 +37,7 @@ and consultations with extreme professionalism and empathy. I can handle:
 
 {BOLD}Initial Prompt:{RESET} What is the issue you're facing, and how urgent is it?
 """
-
-def main():
-    # Ensure database is initialized
-    init_db()
+    print(agent_description)
 
     shared = {
         "history": [],
@@ -45,7 +50,6 @@ def main():
 
     flow = create_hvac_agent_flow()
 
-    print(AGENT_DESCRIPTION)
     
     while True:
         try:

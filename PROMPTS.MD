@@ -301,3 +301,36 @@ You: I just turned on the heat for the first time this season and it smells like
   [CHAT]: Post-turn completed.
 
 You: 
+
+28. add a small change in the agent description in main.py, add the exported LLM model
+
+AGENT_DESCRIPTION = f"""
+{BOLD}{BLUE}--- HVAC Booking AI Assistant ---{RESET}
+Powered by {YELLOW}PocketFlow{RESET} and {YELLOW}OpenRouter{RESET}.
+
+e.g. Powered by PocketFlow and OpenRouter anthropic/claude-sonnet-4.5
+
+29. In the command line, I did
+
+chaschel@xia:~$ export LLM_MODEL="nousresearch/hermes-3-llama-3.1-405b:free"
+chaschel@xia:~$ echo $LLM_MODEL
+nousresearch/hermes-3-llama-3.1-405b:free
+
+but when the main.py AI agent ran, it displayed
+
+--- HVAC Booking AI Assistant ---
+Powered by PocketFlow and OpenRouter openai/gpt-4o-mini.
+
+It is supposed to use the LLM model currently exported
+
+30. based on agent/main.py, it appears that it does not override the default openai/gpt-4o-mini
+
+def main():
+    # Ensure database is initialized
+    init_db()
+
+    model = os.getenv("LLM_MODEL", "openai/gpt-4o-mini")
+    
+    agent_description = f"""
+{BOLD}{BLUE}--- HVAC Booking AI Assistant ---{RESET}
+Powered by {YELLOW}PocketFlow{RESET} and {YELLOW}OpenRouter{RESET} {YELLOW}{model}{RESET}.
