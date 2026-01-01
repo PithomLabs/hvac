@@ -77,7 +77,7 @@ def run_human_simulator(history, scenario_content, force_continue=False):
 
     prompt = f"### CONVERSATION HISTORY\n{formatted_history}\n\nAGENT JUST SPOKE. {human_name}, what is your reply? REMEMBER: Speak only as {human_name}. Do NOT describe your actions."
     
-    os.environ["LLM_MODEL"] = "nvidia/nemotron-nano-9b-v2:free"
+    os.environ["LLM_MODEL"] = "xiaomi/mimo-v2-flash:free"
     response = call_llm(prompt, system_prompt=system_prompt).strip()
     return response
 
@@ -110,7 +110,7 @@ def run_orchestration(scenario_file):
     min_turns = 5
     while turn_count < 10: # Max turns requested by user
         # --- AGENT TURN ---
-        os.environ["LLM_MODEL"] = "xiaomi/mimo-v2-flash:free"
+        os.environ["LLM_MODEL"] = "nvidia/nemotron-3-nano-30b-a3b:free"
         flow.run(shared)
         agent_msg = shared.get("last_response", "")
         
@@ -139,7 +139,7 @@ def run_orchestration(scenario_file):
         if is_finished and not force_continue:
             print(f"{GREEN}Human ended simulation (Turn {turn_count+1}). One last agent turn...{RESET}")
             # One last agent turn to ensure they respond to final info
-            os.environ["LLM_MODEL"] = "xiaomi/mimo-v2-flash:free"
+            os.environ["LLM_MODEL"] = "nvidia/nemotron-3-nano-30b-a3b:free"
             flow.run(shared)
             agent_msg = shared.get("last_response", "")
             if agent_msg:

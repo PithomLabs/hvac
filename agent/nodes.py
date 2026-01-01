@@ -61,11 +61,15 @@ class DecideNode(Node):
         Respond ONLY in JSON: {{"action": "chat|extract|book|finish", "reasoning": "..."}}
         """
         try:
+            print(f"{BLUE}[DEBUG] DecideNode calling LLM (model={os.getenv('LLM_MODEL')}){RESET}", flush=True)
             response = call_llm(prompt)
+            print(f"{GREEN}[DEBUG] DecideNode LLM returned{RESET}", flush=True)
             clean_response = response.replace("```json", "").replace("```", "").strip()
-            return json.loads(clean_response)
+            result = json.loads(clean_response)
+            print(f"{GREEN}[DEBUG] DecideNode decided: {result.get('action')}{RESET}", flush=True)
+            return result
         except Exception as e:
-            pass
+            print(f"{YELLOW}[DEBUG] DecideNode ERROR: {e}{RESET}", flush=True)
             return {"action": "chat", "reasoning": f"Error: {e}"}
 
     def post(self, shared, prep_res, exec_res):
@@ -245,6 +249,8 @@ class BookingNode(Node):
         shared.setdefault("history", []).append({"role": "assistant", "content": exec_res})
         shared["last_response"] = exec_res
         shared["extraction_attempts"] = 0
-        if "Success!" in exec_res:
+        # Update confirmation status when booking succeeds
+        # Check for both old format ("Success!") and new format ("[SYSTEM]")
+        if "Success!" in exec_res or "[SYSTEM] Booking confirmed" in exec_res:
             shared.setdefault("booking_info", {})["confirmed"] = True
         return "default"
