@@ -87,7 +87,9 @@ class ChatNode(Node):
             "history": shared.get("history", []),
             "user_info": shared.get("user_info", {}),
             "booking_info": shared.get("booking_info", {}),
-            "confirmed": shared.get("booking_info", {}).get("confirmed", False)
+            "confirmed": shared.get("booking_info", {}).get("confirmed", False),
+            "phase2_delivered": shared.get("booking_info", {}).get("phase2_delivered", False),
+            "hb_number": shared.get("booking_info", {}).get("hb_number", "HB-XXXX")
         }
 
     def exec(self, prep_res):
@@ -100,12 +102,14 @@ class ChatNode(Node):
         examples = load_prompt("chat_examples.txt")
         
         context_block = f"""
-        CURRENT BOOKING STATUS:
-        - Booking Confirmed: {confirmed}
-        - Customer Name: {user.get('name', 'Missing')}
-        - Service Address: {user.get('address', 'Missing')}
-        - Service Type: {booking.get('service_type', 'Missing')}
-        """
+    CURRENT BOOKING STATUS:
+    - Booking Confirmed: {confirmed}
+    - Phase 2 (Confirmation) Delivered: {'Yes' if prep_res.get('phase2_delivered') else 'No'}
+    - Customer Name: {user.get('name', 'Missing')}
+    - Service Address: {user.get('address', 'Missing')}
+    - Service Type: {booking.get('service_type', 'Missing')}
+    - Confirmation Number: {prep_res.get('hb_number')}
+    """
         
         system_prompt = f"{system_main}\n\n{context_block}\n\n{examples}"
         try:
@@ -121,8 +125,11 @@ class ChatNode(Node):
         shared.setdefault("history", []).append({"role": "assistant", "content": exec_res})
         shared["last_response"] = exec_res
         shared["extraction_attempts"] = 0
+        
+        # If agent delivers the "Success!" spiel, mark as delivered
         if "Success!" in exec_res:
             shared.setdefault("booking_info", {})["confirmed"] = True
+            shared["booking_info"]["phase2_delivered"] = True
         return "default"
 
 class ExtractionNode(Node):
@@ -249,8 +256,15 @@ class BookingNode(Node):
         shared.setdefault("history", []).append({"role": "assistant", "content": exec_res})
         shared["last_response"] = exec_res
         shared["extraction_attempts"] = 0
+        
         # Update confirmation status when booking succeeds
-        # Check for both old format ("Success!") and new format ("[SYSTEM]")
-        if "Success!" in exec_res or "[SYSTEM] Booking confirmed" in exec_res:
-            shared.setdefault("booking_info", {})["confirmed"] = True
+        if "[SYSTEM] Booking confirmed" in exec_res or "Success!" in exec_res:
+            booking = shared.setdefault("booking_info", {})
+            booking["confirmed"] = True
+            
+            # PERSISTENT HB NUMBER: Generate once at booking time
+            import random
+            if "hb_number" not in booking:
+                booking["hb_number"] = f"HB-{random.randint(1000, 9999)}"
+                
         return "default"

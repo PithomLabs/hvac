@@ -2,29 +2,34 @@ Extract HVAC-related information from the user's last message.
 
 SERVICE MAPPING (Comprehensive):
 
+**INSTALLATION keywords:**
+- "install", "installation", "setup", "set up", "replace", "replacement"
+- Context: "I bought [device]" or wanting a "new system"
+
 **MAINTENANCE keywords:**
-- "install", "installation", "setup", "set up", "tune-up", "tune up", 
-  "check-up", "check up", "maintenance", "filter change", "spring cleaning", 
-  "winterize", "annual service", "inspection"
-- Questions: "Can you install?", "Do you install?", "Can you set up?"
-- Context: "I bought [device]" + any install/setup keyword → Maintenance
+- "tune-up", "tune up", "check-up", "check up", "maintenance", 
+  "filter change", "spring cleaning", "winterize", "annual service", "inspection"
 
 **REPAIR keywords:**
 - "broken", "dead", "not working", "won't turn on", "won't start", 
   "leak", "leaking", "drip", "dripping", "noise", "noisy", "loud", 
   "smell", "smells", "odor", "frozen", "freezing", "hot", "cold"
 
+**RESCHEDULE keywords:**
+- "reschedule", "move", "change date", "Friday instead", "Tuesday instead", "can't make it"
+
 **CONTEXTUAL INFERENCE:**
 - If user mentions a device (e.g., "Nest thermostat", "new AC", "furnace") 
-  followed by install/setup keywords → service_type: "Maintenance", issue: "[Device] installation"
+  followed by install/setup keywords → service_type: "Installation", issue: "[Device] installation"
 - If user describes a problem (e.g., "AC won't turn on") → service_type: "Repair", issue: user's description
+- If user wants to change an existing tech visit → service_type: "Reschedule"
 
 **Output Keys (JSON only):**
 - name: Full customer name
 - address: Full service address  
 - phone: Phone number
 - email: Email address
-- service_type: "Maintenance", "Repair", or "Quote"
+- service_type: "Maintenance", "Repair", "Installation", "Reschedule", or "Quote"
 - issue: Short description (e.g., "Nest thermostat installation", "AC not cooling")
 - urgency: "High", "Medium", or "Low"
 

@@ -35,8 +35,12 @@ def log_to_file(file_path, text, is_new=False):
             f.write("# Multi-Agent Conversation Simulation (Single-Process)\n\n")
         f.write(text + "\n\n")
 
-def run_human_simulator(history, scenario_content, force_continue=False):
-    """Simulates the human side directly using LLM call."""
+def run_human_simulator(history, scenario_content, force_continue=False, locked_identity=None):
+    """Simulates the human side directly using LLM call.
+    
+    Args:
+        locked_identity: If provided, use this name instead of extracting from scenario
+    """
     # Try to extract Persona/Intent from scenario
     human_intent_match = re.search(r'## Human Intent\n(.*?)\n##', scenario_content, re.DOTALL)
     human_intent = human_intent_match.group(1).strip() if human_intent_match else ""
@@ -44,15 +48,20 @@ def run_human_simulator(history, scenario_content, force_continue=False):
     # Clean up common role-play labels from intent
     human_intent = re.sub(r'Human:|Agent:|\*\*Human\*\*:\s*|\*\*AI Agent\*\*:\s*', '', human_intent)
     
-    if not human_intent:
+    # Use locked identity if provided (Option 1: Lock in Identity)
+    if locked_identity:
+        human_name = locked_identity
+    elif not human_intent:
         # Fallback: look for specific name/address in the scenario text
         name_match = re.search(r'name is ([\w\s]+)', scenario_content, re.IGNORECASE)
         addr_match = re.search(r'at ([\w\s,]+)', scenario_content, re.IGNORECASE)
         name = name_match.group(1).strip() if name_match else "Sarah Jenkins"
         addr = addr_match.group(1).strip() if addr_match else "123 Main St"
         human_intent = f"You are {name} living at {addr}."
-
-    human_name = re.search(r'is ([\w\s]+)', human_intent).group(1) if 'is ' in human_intent else 'Sarah Jenkins'
+        human_name = name
+    else:
+        # Re-extract name from existing human_intent
+        human_name = re.search(r'is ([\w\s]+)', human_intent).group(1) if 'is ' in human_intent else 'Sarah Jenkins'
     
     formatted_history = ""
     for turn in history:
@@ -61,6 +70,14 @@ def run_human_simulator(history, scenario_content, force_continue=False):
 
     system_prompt = f"""
     You are {human_name}, a REAL customer needing HVAC help.
+    
+    CRITICAL IDENTITY RULES:
+    - Your name is {human_name}. This is FIXED and UNCHANGEABLE.
+    - You already introduced yourself as {human_name} in your first message.
+    - NEVER question who {human_name} is or claim to be someone else.
+    - NEVER say things like "Wait, who is {human_name}?" or "My name is [different name]".
+    - Stay 100% in character as {human_name} throughout the entire conversation.
+    
     STRICT RULES:
     1. NEVER say "I am an AI". Act 100% human.
     2. Respond ONLY with what you would say to the agent.
@@ -68,7 +85,7 @@ def run_human_simulator(history, scenario_content, force_continue=False):
     4. NEVER role-play OR describe what you are doing. Just SPEAK.
     5. You are NOT an expert. You are just a stressed customer.
     6. Respond in SHORT, natural sentences.
-    7. If asked for information (Zip, Name, Address), PROVIDE IT IMMEDIATELY. Do NOT say "I will provide it". Make it up if you don't have it in your intent.
+    7. If asked for information (Zip, Name, Address), PROVIDE IT CONSISTENTLY with your identity as {human_name}. Make it up if needed.
     8. If the agent confirmed your booking and you are satisfied, say thanks/goodbye and add [FINISHED].
     """
     
@@ -77,7 +94,7 @@ def run_human_simulator(history, scenario_content, force_continue=False):
 
     prompt = f"### CONVERSATION HISTORY\n{formatted_history}\n\nAGENT JUST SPOKE. {human_name}, what is your reply? REMEMBER: Speak only as {human_name}. Do NOT describe your actions."
     
-    os.environ["LLM_MODEL"] = "xiaomi/mimo-v2-flash:free"
+    os.environ["LLM_MODEL"] = "nvidia/nemotron-nano-9b-v2:free"
     response = call_llm(prompt, system_prompt=system_prompt).strip()
     return response
 
@@ -93,9 +110,14 @@ def run_orchestration(scenario_file):
     first_human_match = re.search(r'\*\*Human\*\*:\s*(.*)', scenario_content)
     first_msg = first_human_match.group(1).strip() if first_human_match else "Hi, I need help."
 
+    # Extract and lock identity from first message (Option 1: Lock in Identity)
+    name_match = re.search(r'[Mm]y name is ([\w\s]+)', first_msg)
+    locked_identity = name_match.group(1).strip() if name_match else None
+    
     shared = {
         "history": [], "user_info": {}, "booking_info": {},
-        "current_action": None, "last_response": "", "extraction_attempts": 0
+        "current_action": None, "last_response": "", "extraction_attempts": 0,
+        "human_identity": locked_identity  # Store locked identity
     }
     
     flow = create_hvac_agent_flow()
@@ -110,7 +132,7 @@ def run_orchestration(scenario_file):
     min_turns = 5
     while turn_count < 10: # Max turns requested by user
         # --- AGENT TURN ---
-        os.environ["LLM_MODEL"] = "nvidia/nemotron-3-nano-30b-a3b:free"
+        os.environ["LLM_MODEL"] = "nvidia/nemotron-nano-9b-v2:free"
         flow.run(shared)
         agent_msg = shared.get("last_response", "")
         
@@ -126,7 +148,7 @@ def run_orchestration(scenario_file):
 
         # --- HUMAN TURN ---
         force_continue = turn_count < min_turns
-        human_msg = run_human_simulator(shared["history"], scenario_content, force_continue=force_continue)
+        human_msg = run_human_simulator(shared["history"], scenario_content, force_continue=force_continue, locked_identity=shared.get("human_identity"))
         
         is_finished = "[FINISHED]" in human_msg
         clean_msg = human_msg.replace("[FINISHED]", "").strip()
@@ -139,7 +161,7 @@ def run_orchestration(scenario_file):
         if is_finished and not force_continue:
             print(f"{GREEN}Human ended simulation (Turn {turn_count+1}). One last agent turn...{RESET}")
             # One last agent turn to ensure they respond to final info
-            os.environ["LLM_MODEL"] = "nvidia/nemotron-3-nano-30b-a3b:free"
+            os.environ["LLM_MODEL"] = "nvidia/nemotron-nano-9b-v2:free"
             flow.run(shared)
             agent_msg = shared.get("last_response", "")
             if agent_msg:
