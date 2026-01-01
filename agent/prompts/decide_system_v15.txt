@@ -23,7 +23,6 @@ Pick 'extract' if the LAST MESSAGE contains ANY of:
 IMPORTANT: Even if wording is informal, if booking-related info is present, pick 'extract'.
 
 ### DECISION PRIORITY:
-0. **SERVICE AREA RULE**: If the location is explicitly stated/inferred as >30 miles away (e.g., Springfield), pick 'chat' to decline. Do NOT pick 'book'.
 1. If all data (Name, Address, Service) present + Confirmed is No → **'book'**
 2. If Extraction Attempts >= 2 for same message → **'chat'** (stop extracting, move forward)
 3. If LAST MESSAGE has extractable data AND Extraction Attempts < 2 → **'extract'**

@@ -1,0 +1,72 @@
+Database initialized at /home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/hvac_booking.db
+Database bookings cleared and slots reset.
+[96m--- Simulation Started: /home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/data/qa/multi_agent/gold_d16_angry_multi_agent_v2.md ---[0m
+[94m[DEBUG] DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: extract[0m
+[94m[DEBUG] DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: extract[0m
+[94m[DEBUG] DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: chat[0m
+[94mAgent responded. (280 chars)[0m
+[95mHuman responded. (Turn 1)[0m
+[96mTurn 1 finished.[0m
+[94m[DEBUG] DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: extract[0m
+[94m[DEBUG] DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: book[0m
+[94mAgent responded. (65 chars)[0m
+[95mHuman responded. (Turn 2)[0m
+[96mTurn 2 finished.[0m
+[94m[DEBUG] DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: chat[0m
+[94mAgent responded. (630 chars)[0m
+[95mHuman responded. (Turn 3)[0m
+[96mTurn 3 finished.[0m
+[94m[DEBUG] DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: chat[0m
+[94mAgent responded. (509 chars)[0m
+[95mHuman responded. (Turn 4)[0m
+[96mTurn 4 finished.[0m
+[94m[DEBUG] DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: chat[0m
+[94mAgent responded. (398 chars)[0m
+[95mHuman responded. (Turn 5)[0m
+[96mTurn 5 finished.[0m
+[94m[DEBUG] DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: chat[0m
+[94mAgent responded. (568 chars)[0m
+[95mHuman responded. (Turn 6)[0m
+[96mTurn 6 finished.[0m
+[94m[DEBUG] DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: chat[0m
+[94mAgent responded. (166 chars)[0m
+[92mAgent ended simulation (Turn 7).[0m
+
+[92m[1mSimulation finished.[0m
+
+[1mSimulation Report for gold_d16_angry.md:[0m
+Status:  PASS (Closure reached in 7 turns)
+DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: chat[0m
+[94mAgent responded. (457 chars)[0m
+[95mHuman responded. (Turn 9)[0m
+[92mHuman ended simulation (Turn 9). One last agent turn...[0m
+[94m[DEBUG] DecideNode calling LLM (model=nvidia/nemotron-nano-9b-v2:free)[0m
+[92m[DEBUG] DecideNode LLM returned[0m
+[92m[DEBUG] DecideNode decided: chat[0m
+
+[92m[1mSimulation finished.[0m
+
+[1mSimulation Report for gold_d16_angry.md:[0m
+Status:  DROPPED/NO CLOSURE (Stopped at 9 turns)

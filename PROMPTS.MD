@@ -1519,3 +1519,41 @@ as usual, document everything under antigravity subfolder
 ask if you need to clarify
 
 106. dry run scenario 12
+
+107. dry run scenario 13
+
+108. looks like gold_d13_haggle_multi_agent_v1.md captured LLM metadata, not the actual chat conversation
+
+109. dry run scenario 14 
+
+110. dry run scenario 15
+
+Antigravity:
+Scenario 15 (Out-of-Area) Dry Run: FAIL (Logic Defect) 🔴
+
+This scenario revealed a significant functional gap: Service Area Blindness.
+
+The Defect
+Despite the user explicitly stating the location (Springfield) and distance (50 miles away), the agent entirely ignored the area constraint and successfully booked the customer. In the "Gold Standard" scenario, the agent is expected to decline the request because it exceeds the 30-mile service radius.
+
+Analysis
+Root Cause: There are currently no service area rules or geographical constraints in chat_system.txt or decide_system.txt.
+Consequence: The agent is "overly eager" and will book any request regardless of location, leading to operational inefficiency (technicians traveling too far).
+Documentation (incremental/antigravity)
+task_v7.md
+: Failure documented.
+walkthrough_v7.md
+: Detailed defect analysis.
+VISUAL_REP_v8.MD
+: Dashboard updated with 🔴 FAIL.
+Log: 
+Scenario 15 v1
+Should we address this by adding a "Service Area" rule to the prompts, or continue with Scenario 16?
+
+111. Should we address this by adding a "Service Area" rule to the prompts -Yes
+
+112. terminal metadata still shows, refer to gold_d15_area_multi_agent_v2.md 
+
+if you want to keep logging it, name it with metadata suffix in the filename
+
+113. dry run scenario 16 (pending)
