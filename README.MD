@@ -11,8 +11,7 @@
 This is a project for Agentic Coding based on [Pocket Flow](https://github.com/The-Pocket/PocketFlow), a 100-line LLM framework and Antigravity.
 
 
-<video src="./assets/Building_an_AI_Agent.mp4" controls width="720"></video>
-
+[![Overview video](assets/infographic.png)](assets/Building_an_AI_Agent.mp4)
 
 ***
 
