@@ -432,8 +432,18 @@ pip install -r requirements.txt
 
 # 2. Set environment variables
 export OPENROUTER_API_KEY="your_key_here"
-export LLM_MODEL="openai/gpt-4o-mini"  # or nvidia/nemotron-nano-9b-v2:free
+
+# refer to https://openrouter.ai/models
+# openai/gpt-oss-120b 
+# anthropic/claude-sonnet-4.5 
+# google/gemini-2.5-flash
+# anthropic/claude-haiku-4.5
+# openai/gpt-5-mini
+# openai/gpt-4o-mini
+export LLM_MODEL="openai/gpt-oss-120b"
+
 export APP_ENV="qa"  # Enable debug logging
+export APP_ENV="prod"  # Disable debug logging (default)
 
 # 3. Run the agent
 cd agent
@@ -462,7 +472,7 @@ APP_ENV=qa python3 main.py
 
 - **`APP_ENV=qa`**: Enables `[DEBUG]` logs in terminal
 - **Service Area Test Addresses**:
-  - IN-AREA: "143 schott st san jose ca" (86.3 miles from Sacramento)
+  - IN-AREA: "142 Schott St San Jose CA" (86.3 miles from Sacramento)
   - OUT-OF-AREA: "10880 Malibu Point, California" (292.6 miles from Phoenix)
 
 ### Development Workflow
