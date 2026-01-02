@@ -9,12 +9,6 @@
 This is a project for Agentic Coding based on [Pocket Flow](https://github.com/The-Pocket/PocketFlow), a 100-line LLM framework and Antigravity.
 
 
-
-[![Watch the video](https://raw.githubusercontent.com/PithomLabs/hvac/master/assets/infographic.png)](https://raw.githubusercontent.com/PithomLabs/hvac/master/assets/Building_an_AI_Agent.mp4)
-
-
-
-
 ***
 
 # HVAC Booking Agent ("Antigravity") - Development Log & Analysis
