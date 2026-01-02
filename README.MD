@@ -12,9 +12,8 @@ This is a project for Agentic Coding based on [Pocket Flow](https://github.com/T
 
 
 
-<video width="100%" controls>
-  <source src="assets/Building_an_AI_Agent.mp4" type="video/mp4">
-</video>
+
+![Watch overview](assets/Building_an_AI_Agent.mp4)
 
 ***
 
