@@ -1724,3 +1724,7 @@ I need comprehensive solution to address this once and for all
 129. now let us try a more robust test combining 3 different scenarios in one conversation (randomize from any of the 20 gold standard scenarios)
 
 write your TEST proposal as LONG_FORM_CHAT.MD
+
+130. expand on the README_1.MD and README_2.MD based on README_PLAN.MD based on the state of the codebase, how it evolve, fix the bugs etc
+
+I want a final README_3.MD, make it comprehensive, read those files carefully as I want it detailed and insightful from an outsider point of view who wants to know more about the codebase, how it works and how it is organized
