@@ -51,19 +51,46 @@ and consultations with extreme professionalism and empathy. I can handle:
     flow = create_hvac_agent_flow()
 
     
+    import select
+    
     while True:
         try:
-            user_input = input(f"\n{BOLD}You:{RESET} ")
-            if not user_input.strip():
+            # PACING & BUFFER FLUSH: Ensure the user is ready
+            import sys
+            sys.stdout.flush()
+            time.sleep(0.5)
+            
+            print(f"\n{BOLD}You:{RESET} ", end="", flush=True)
+            
+            lines = []
+            while True:
+                # Wait for input with timeout (0.8s threshold)
+                ready, _, _ = select.select([sys.stdin], [], [], 0.8 if lines else None)
+                if ready:
+                    line = sys.stdin.readline()
+                    if not line: # EOF
+                        break
+                    stripped = line.strip()
+                    if stripped:
+                        lines.append(stripped)
+                    if not lines: continue
+                else:
+                    if lines:
+                        break
+            
+            if not lines:
                 continue
                 
-            if user_input.lower() in ["exit", "quit", "bye"]:
-                print(f"\n{BLUE}Agent:{RESET} It was a pleasure assisting you. Have a wonderful and comfortable day! Goodbye.")
+            user_input = " ".join(lines)
+            
+            if user_input.upper() in ["STOP", "HALT", "EXIT", "QUIT", "BYE"]:
+                print(f"\n{BLUE}Agent:{RESET} Session terminated as requested. Have a wonderful and comfortable day! Goodbye.")
                 break
             
             # Add user message to history
             shared["history"].append({"role": "user", "content": user_input})
             shared["last_response"] = "" # Reset for this turn
+            shared["extraction_attempts"] = 0 # Reset attempts for new fresh input
             
             # Run the flow
             flow.run(shared)

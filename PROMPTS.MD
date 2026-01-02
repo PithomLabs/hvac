@@ -1641,3 +1641,82 @@ Heuristic Ranking: The Objective Measuring Stick: Detailed definitions of the 5 
 Scientific Refinement: Documentation of the "Antigravity" Cycle (Simulation -> Score -> Refine) with specific case studies (R0 and R9).
 Consolidated Roadmap: A clear visual and narrative trace of the agent's evolution from R0 to R9.
 This document now serves as the definitive guide to the project's technical and philosophical foundation.
+
+
+122. under data folder create test2 subfolder and dry run scenario 1, do not forget to create the necessary md files per data/qa/multi_agent folder
+
+ask me if you need to clarify anything, I will say next when to proceed
+
+123. This is a test on main.py under agent folder, it appears that the AI agent is replying aggresively even though I still have to reply yet
+
+chaschel@xia:~/Documents/ibm/ai/PocketFlow-Template-Python-main$ python3 main.py
+Database initialized at /home/chaschel/Documents/ibm/ai/PocketFlow-Template-Python-main/agent/hvac_booking.db
+
+--- HVAC Booking AI Assistant ---
+Powered by PocketFlow and OpenRouter openai/gpt-oss-120b.
+
+I am an AI-powered HVAC service assistant designed to help you book repairs, maintenance, 
+and consultations with extreme professionalism and empathy. I can handle:
+- Emergency Repairs (leaks, smells, extreme weather outages)
+- Maintenance Tune-ups
+- New System Estimates
+- Booking Modifications (rescheduling, gate codes)
+
+Initial Prompt: What is the issue you're facing, and how urgent is it?
+
+
+You: Oh thank God someone finally answered...
+Look, my air conditioning completely died yesterday afternoon, and it is absolutely MISERABLE in here. It's like 82 degrees inside my house right now and climbing. I have a little one who's been fussy and sweaty all night, and honestly? I barely slept.
+I tried everything I could think of - checked the thermostat, made sure the breaker didn't flip, even went outside to look at the unit and it's just... dead. Not making any noise, nothing's running. Complete silence.[DEBUG] DecideNode calling LLM (model=openai/gpt-oss-120b)
+
+[DEBUG] DecideNode LLM returned
+[DEBUG] DecideNode decided: chat
+
+Agent: Sorry for the wait! To get started, could you please provide your name, the service address (within a 30‑mile radius of our office), and let me know what HVAC service you need?
+
+You: [DEBUG] DecideNode calling LLM (model=openai/gpt-oss-120b)
+[DEBUG] DecideNode LLM returned
+[DEBUG] DecideNode decided: extract
+[DEBUG] DecideNode calling LLM (model=openai/gpt-oss-120b)
+[DEBUG] DecideNode LLM returned
+[DEBUG] DecideNode decided: extract
+[DEBUG] DecideNode calling LLM (model=openai/gpt-oss-120b)
+[DEBUG] DecideNode LLM returned
+[DEBUG] DecideNode decided: chat
+
+Agent: I’m so sorry you’re dealing with that heat—let’s get you comfortable as quickly as possible. Could you please share your full name and the service address (within a 30‑mile radius of our office)? Once I have that, I can confirm we can send a technician for an AC repair and discuss a convenient time for the visit.
+
+You: [DEBUG] DecideNode calling LLM (model=openai/gpt-oss-120b)
+[DEBUG] DecideNode LLM returned
+[DEBUG] DecideNode decided: extract
+[DEBUG] DecideNode calling LLM (model=openai/gpt-oss-120b)
+[DEBUG] DecideNode LLM returned
+[DEBUG] DecideNode decided: extract
+[DEBUG] DecideNode calling LLM (model=openai/gpt-oss-120b)
+[DEBUG] DecideNode LLM returned
+[DEBUG] DecideNode decided: chat
+
+Agent: I understand—let’s have a technician diagnose and repair the unit right away. Could you please provide your full name and the service address (it needs to be within 30 miles of our office)? Once I have those details, I can check our next available appointment for you.
+
+124. same issue still, does the fix include sort of threshold timer for the AI agent to wait for human reply?
+
+125. wait for my next instruction, do not go automatically what you will do next, REMEMBER THIS
+
+in the codebase, add env flag if this is prod or qa
+
+when in prod, disable log of debug info
+in qa, enable it though
+
+I will say what to do next
+
+126. go proceed, then wait for my next instruction
+
+127. before proceeding, reread PocketFlow-main folder especially the cookbook folder and tell me which pocketflow pattern you can use to address the bugs (e.g. can the rag pattern help here)
+write your analysis and proposal at PATTERN_STRATEGY.MD
+wait for my next instruction
+
+128. read pocketflow_design_patterns.txt and write your proposal on how to update your PATTERN_STRATEGY.MD on how to address the bugs encountered so far
+
+version that md file
+
+I need comprehensive solution to address this once and for all
