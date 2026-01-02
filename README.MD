@@ -1,20 +1,18 @@
 <h1 align="center">Pocket Flow Project: HVAC Booking Agent</h1>
 
 <p align="center">
-  <a href="https://github.com/PithomLabs/hvac" target="_blank">
     <img 
       src="./assets/infographic.png" width="800"
     />
-  </a>
 </p>
 
 This is a project for Agentic Coding based on [Pocket Flow](https://github.com/The-Pocket/PocketFlow), a 100-line LLM framework and Antigravity.
 
 
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=9q__1_e9XWs
-" target="_blank"><img src="http://img.youtube.com/vi/9q__1_e9XWs/0.jpg" 
-alt="Watch overview" width="480" height="360" border="10" /></a>
+[![Watch the video](https://raw.githubusercontent.com/PithomLabs/hvac/master/assets/infographic.png)](https://raw.githubusercontent.com/PithomLabs/hvac/master/assets/Building_an_AI_Agent.mp4)
+
+
 
 
 ***
