@@ -1,0 +1,15 @@
+# Task: Dry Run Scenario 16
+
+## Objectives
+- [ ] Research Scenario 16 requirements and current missing gaps
+- [ ] Perform an initial dry run of Scenario 16 to observe current behavior
+- [ ] Identify necessary changes to handled angry sentiment and manager escalation
+- [ ] Implement sentiment analysis / manager flag logic
+- [ ] Verify the fix with a final simulation run
+
+## Checklist
+- [x] Read `gold_d16_angry.md` and existing multi-agent logs
+- [/] Run `simulation_orchestrator.py data/qa/gold_d16_angry.md`
+- [ ] Analyze simulation output
+- [ ] Update `agent/` nodes (likely `DecideNode` or `ChatNode`)
+- [ ] Re-run simulation and verify PASS status
