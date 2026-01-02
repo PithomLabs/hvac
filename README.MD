@@ -13,7 +13,7 @@ This is a project for Agentic Coding based on [Pocket Flow](https://github.com/T
 
 
 
-![Watch overview](assets/Building_an_AI_Agent.mp4)
+![Watch overview](https://www.youtube.com/watch?v=9q__1_e9XWs)
 
 ***
 
