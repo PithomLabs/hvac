@@ -1720,3 +1720,7 @@ wait for my next instruction
 version that md file
 
 I need comprehensive solution to address this once and for all
+
+129. now let us try a more robust test combining 3 different scenarios in one conversation (randomize from any of the 20 gold standard scenarios)
+
+write your TEST proposal as LONG_FORM_CHAT.MD

@@ -1,43 +1,158 @@
-# BUG_1.6.MD: Premature Termination (Trigger-Happy Finisher)
+# BUG-1.6: Post-Booking Context Loss (Phase 3 Memory Issue)
 
-**Bug ID**: BUG-001
-**Update Version**: 1.6
-**Status**: IDENTIFIED
-**Severity**: MEDIUM (Affects user satisfaction and completeness)
-**Date**: 2026-01-02
+**Status**: ✅ RESOLVED  
+**Date**: 2026-01-02  
+**Resolution Date**: 2026-01-02  
+**Severity**: MEDIUM (Poor UX, but not blocking)
 
----
+## Problem Statement
 
-## 1. Problem Statement
-The agent terminates the conversation (`*END OF CONVERSATION*`) while the user is still asking critical follow-up questions (e.g., billing details, preparation instructions).
+After successfully completing a booking and delivering the Phase 2 confirmation script, the agent **forgets customer details** when handling follow-up questions. This creates a poor user experience where customers must re-provide information they've already given.
 
----
+## Reproduction
 
-## 2. Technical Root Cause
+```
+User: My heating stopped working... does my home have a furnace or heat pump?
+Agent: [Provides technical advice] Please provide your name and address for booking.
 
-### A. Decision Node Aggression
-The `DecideNode` (Manager) is likely interpreting "Okay, that works" as a sign of closure, ignoring the subsequent "Just to be totally clear though..." follow-up questions.
+User: chaschel kurumi 2 Commercial Pkwy Branford, CT 06405
+[Service Area] → 34.7 miles from Hartford, CT → IN
+Agent: Thank you, Chaschel Kurumi. When are you available?
 
-### B. Phase 2/3 Ambiguity
-The prompts for `DecideNode` and `ChatNode` prioritize "Moving to closure" once the booking is confirmed, leading to a "mission accomplished" bias that ignores secondary user needs.
+User: monday 10am
+Agent: Does that work for you?
 
----
+User: yes
+Agent: Could you confirm the service type?
 
-## 3. Proposed Remediation
+User: heating stopped working
+Agent: Booking confirmed! HB-XXXX. Is there anything else I can help you with?
 
-### A. "Negative Acknowledgement" Rule
-Update `decide_system.txt` to explicitely check for **question marks** or **uncertainty** in the user's last message. 
-- **Rule**: "If the user suggests closure BUT includes a question mark or a new concern, you MUST pick 'chat', NOT 'finish'."
+User: Do you provide duct cleaning services?
+Agent: We do offer duct cleaning. Would you like to schedule? 
+       ❌ PLEASE LET ME KNOW YOUR NAME AND ADDRESS IF YOU'RE INTERESTED.
+```
 
-### B. Chat Node Persistence
-Update `chat_system.txt` to reinforce that in Phase 2, the agent must stay in the loop until a "clean" goodbye is received (e.g., "That's all", "No thanks").
+## Root Cause
 
----
+The agent enters **Phase 3** (Post-Booking) after delivering the confirmation script, but the system is treating follow-up questions as **new conversations** rather than continuation of the same customer session.
 
-## 4. Next Steps
-- [ ] Refine `decide_system.txt` logic.
-- [ ] Update `chat_system.txt` termination rules.
-- [ ] Verify with Scenario 12 (Tenant/Landlord).
+### Expected Data Flow
+```
+Phase 1 → Extract & Store → Phase 2 (Booking) → Phase 3 (Follow-up)
+          ✓ Name           ✓ Booking #         ❌ CONTEXT RETAINED?
+          ✓ Address        ✓ Confirmed
+```
 
----
-*Document Version: 1.6 | Reported by: USER / Antigravity*
+### Actual Data Flow
+```
+Phase 1 → Extract & Store → Phase 2 (Booking) → Phase 3 (Follow-up)
+          ✓ Name           ✓ Booking #         ❌ CONTEXT LOST!
+          ✓ Address        ✓ Confirmed         ❌ Re-asks for name/address
+```
+
+## Impact
+
+1. **Poor UX**: Customer must repeat information they already provided
+2. **Wasted Time**: Extra conversation turns for data collection
+3. **Unprofessional**: System appears to "forget" what customer just said
+4. **Lost Upsell Opportunity**: Harder to book follow-up services if user frustrated
+
+## Current Behavior
+
+**Phase 2 Confirmation Script:**
+```
+"Your booking confirmation number is: HB-XXXX. Have a great day! 
+ Is there anything else I can help you with today?"
+```
+
+**Follow-up Question Handling:**
+- Agent responds to technical questions ✓
+- Agent offers to schedule additional services ✓
+- **Agent re-asks for name and address** ❌
+
+## Expected Behavior
+
+**Better Follow-up Response:**
+```
+Agent: "We do offer duct cleaning services, which can help reduce dust and allergens. 
+        Would you like me to schedule a duct cleaning service for the same address 
+        (2 Commercial Pkwy Branford, CT) after your heating repair on Monday?"
+```
+
+**Key Improvements:**
+1. ✅ **Remember customer name** - Address them by name
+2. ✅ **Remember address** - Reference existing address, don't re-ask
+3. ✅ **Suggest coordination** - Offer to schedule around existing booking
+4. ✅ **Maintain context** - Acknowledge this is a follow-up, not new conversation
+
+## Proposed Solution
+
+### Option A: Persistent Customer Context (RECOMMENDED)
+
+Modify `ChatNode` to preserve customer information even after booking:
+
+```python
+# In ChatNode.prep()
+context_block = f"""
+CURRENT BOOKING STATUS:
+- Booking Confirmed: {confirmed}
+- Phase 2 Delivered: {'Yes' if prep_res.get('phase2_delivered') else 'No'}
+- Customer Name: {user.get('name', 'Missing')}
+- Service Address: {user.get('address', 'Missing')}
+- Previous Booking: {prep_res.get('hb_number', 'None')}
+
+POST-BOOKING CONTEXT:
+If a previous booking exists AND the user asks about additional services:
+1. Acknowledge them by name
+2. Reference the existing address (don't re-ask)
+3. Offer to coordinate with existing booking if relevant
+4. Only ask for DIFFERENT information (e.g., new service type, different date)
+"""
+```
+
+### Option B: Multi-Service Booking Flag
+
+Add a `multi_service` flag to track when customer wants additional services:
+
+```python
+if confirmed and user.get('name') and user.get('address'):
+    shared['multi_service_mode'] = True
+```
+
+Then in `ChatNode` prompt:
+```
+MULTI-SERVICE MODE: Customer already provided name/address. 
+DO NOT re-ask for these. Reference existing info.
+```
+
+### Option C: Explicit Context Reminder
+
+Add to `chat_system.txt`:
+```
+POST-BOOKING FOLLOW-UP RULES:
+- After booking confirmation, if customer asks about OTHER services:
+  * DO use their name from the previous booking
+  * DO reference their existing address
+  * DO NOT ask for name/address again
+  * DO ask for: service type, preferred date/time, any special requirements
+```
+
+## Recommended Fix (Hybrid A + C)
+
+1. **Update `chat_system.txt`** with explicit post-booking context rules
+2. **Modify `ChatNode.prep()`** to include previous booking context in prompt
+3. **Add `last_booking` field** to track most recent HB number and details
+
+## Testing Strategy
+
+After fix, verify:
+- [ ] Agent remembers customer name in follow-up questions
+- [ ] Agent doesn't re-ask for address if already validated
+- [ ] Agent can book multiple services for same customer
+- [ ] Agent handles new customer (different name) correctly
+
+## Related Issues
+
+- Similar to BUG-1.4 (Premature Termination) - both involve Phase 2/3 transitions
+- Connects to service area validation - address should be reused for follow-up services
