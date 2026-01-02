@@ -13,7 +13,8 @@ This is a project for Agentic Coding based on [Pocket Flow](https://github.com/T
 
 
 
-![Watch overview](https://www.youtube.com/watch?v=9q__1_e9XWs)
+[![Watch the overview](https://img.youtube.com/vi/9q__1_e9XWs/0.jpg)](https://www.youtube.com/watch?v=9q__1_e9XWs)
+
 
 ***
 
